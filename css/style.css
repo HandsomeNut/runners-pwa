@@ -1,0 +1,33 @@
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+
+
+.sidenav-trigger {
+  font-size: 4em;
+  vertical-align: middle;
+}
+
+.timer {
+  margin-top: 5em;
+  margin-bottom: 2em;
+}
+
+.distance {
+  margin-top: 3em;
+}
+
+.tracking {
+  margin-top: 4em;
+}
+
+#timer, #distance, .tracking-info {
+  font-weight: bold;
+}
