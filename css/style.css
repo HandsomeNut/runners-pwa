@@ -1,3 +1,5 @@
+/* layout styles */
+
 body {
   display: flex;
   min-height: 100vh;
@@ -8,12 +10,48 @@ main {
   flex: 1 0 auto;
 }
 
+/* bottom footer bar styles */
 
+footer {
+  padding-top: 10px !important;
+}
 
 .sidenav-trigger {
   font-size: 4em;
   vertical-align: middle;
 }
+
+.app-logo {
+  font-weight: bold;
+}
+
+a.app-logo {
+  vertical-align: top;
+  display: inline-block;
+  text-align: center;
+  max-width: 100px;
+}
+
+.app-logo img {
+  width: 30px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.app-name {
+  display: block;
+  white-space: nowrap;
+}
+
+#scrollPage {
+  /* history page only */
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+/* Timer page styles */
 
 .timer {
   margin-top: 5em;
@@ -28,6 +66,23 @@ main {
   margin-top: 4em;
 }
 
-#timer, #distance, .tracking-info {
+#timer, #distance, .tracking-info, h6 {
   font-weight: bold;
+}
+
+
+
+/* run card styles */
+
+.run-month {
+  margin-top: 20px;
+}
+
+.run {
+  padding: 10px;
+}
+
+.run-title {
+  font-size: 1.05em;
+  font-weight: 400;
 }

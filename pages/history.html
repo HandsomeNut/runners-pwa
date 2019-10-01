@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="de" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, intial-scale=1.0">
+    <meta name="X-UA-Compatible" content="ie=edge">
+    <title>Runners PWA</title>
+
+    <!-- adding stylesheets -->
+    <link rel="stylesheet" href="/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script type="text/javascript" src="/js/materialize.min.js"></script>
+  </head>
+  <body>
+
+      <!-- run history cards -->
+      <main>
+        <div class="runs container black-text text-darken-1">
+
+          <h6 class="run-month">September <span class=" right">(Gesamt: 11,80 km)</span></h6>
+
+          <div class="card-panel run white row" data-id="actualDate">
+            <div class="run-detail">
+              <div class="run-title time col s12">
+                5,26 km <img class="right" src="/img/sunny.png" alt="" style="width: 20px;">
+              </div>
+              <div class="divider col s12"></div>
+
+              <!-- detail info -->
+              <div class="info grey-text">
+                <div class="time col s6">
+                   00:20:35
+                 </div>
+                 <div class="date col s6">
+                   <span class="right">Fr., 20.09.19</span>
+                 </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="card-panel run white row" data-id="actualDate">
+            <div class="run-detail">
+              <div class="run-title time col s12">
+                6,54 km <img class="right" src="/img/cloudy.png" alt="" style="width: 20px;">
+              </div>
+              <div class="divider col s12"></div>
+
+              <!-- detail info -->
+              <div class="info grey-text">
+                <div class="time col s6">
+                   00:31:21
+                 </div>
+                 <div class="date col s6">
+                   <span class="right">Mo., 23.09.19</span>
+                 </div>
+              </div>
+
+            </div>
+          </div>
+
+          <h6 class="run-month">Oktober<span class=" right">(Gesamt: 5.12 km)</span></h6>
+
+          <div class="card-panel run white row" data-id="actualDate">
+            <div class="run-detail">
+              <div class="run-title time col s12">
+                5,12 km <img class="right" src="/img/sunny_s_cloudy.png" alt="" style="width: 20px;">
+              </div>
+              <div class="divider col s12"></div>
+
+              <!-- detail info -->
+              <div class="info grey-text">
+                <div class="time col s6">
+                   00:24:56
+                 </div>
+                 <div class="date col s6">
+                   <span class="right">Di., 01.10.19</span>
+                 </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- sidenav -->
+      <ul id="side-menu" class="sidenav side-menu">
+        <li><a class="subheader">RUNNERS PWA</a></li>
+        <li><a href="/" class="waves-effect"><i class="material-icons">directions_run</i>Laufen</a></li>
+        <li><a href="/pages/history.html" class="waves-effect"><i class="material-icons">list</i>Verlauf</a></li>
+        <li><a href="/pages/overview.html" class="waves-effect"><i class="material-icons">event_note</i>Übersicht</a></li>
+        <li><div class="divider"></div></li>
+        <li><a href="/pages/contact.html" class="waves-effect">
+          <i class="material-icons">mail_outline</i>Kontakt</a>
+        </li>
+      </ul>
+
+
+      <footer id="scrollPage" class="page-footer yellow darken-2 scollPage">
+
+        <div class="center container">
+          <div class="row">
+            <div class="col s4 left">
+              <a class="app-logo red-text text-darken-2"  href="/"><span class="app-name">Runners-PWA</span><img class="app-img" src="/img/icon.png" alt=""></a></div>
+            <!-- menu button -->
+            <div class="col s4 right">
+              <i class="material-icons sidenav-trigger vertical-align" data-target="side-menu">menu</i>
+            </div>
+          </div>
+
+        </div>
+
+
+      </footer>
+
+      <script src="/js/ui.js"></script>
+  </body>
+</html>
