@@ -17,11 +17,39 @@
 
       <!-- content -->
       <main>
-        <div class="container white">
-          <h4>Gesamtdistanz:</h4>
-          <h4>Kalorien:</h4>
-          <h4>Tempo Avg:</h4>
-          <h4>Anzahl Läufe:</h4>
+        <div class="runOverview container white">
+          <table class="highlight">
+            <thead>
+              <tr>
+                <th>Kategorie</th>
+                <th class="center">Gesamt</th>
+                <th class="center">Monat</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="rowDescribtor">Distanz <span class="units">(km)</span> </td>
+                <td id="distTotal">0,00</td>
+                <td id="distMonth">0,00</td>
+              </tr>
+              <tr>
+                <td class="rowDescribtor">Tempo Avg <span class="units">(km/h)</span></td>
+                <td id="speedAvgTotal">0</td>
+                <td id="speedAvgMonth">0</td>
+              </tr>
+              <tr>
+                <td class="rowDescribtor">Kalorien <span class="units">(kcal)</span></td>
+                <td id="caloriesTotal">0</td>
+                <td id="caloriesMonth">0</td>
+              </tr>
+              <tr>
+                <td class="rowDescribtor">Läufe</td>
+                <td id="runsTotal">0</td>
+                <td id="runsMonth">0</td>
+              </tr>
+            </tbody>
+
+          </table>
         </div>
       </main>
 
@@ -38,12 +66,12 @@
       </ul>
 
 
-      <footer id="scrollPage" class="page-footer yellow darken-2 scollPage">
+      <footer id="scrollPage" class="page-footer scollPage">
 
         <div class="center container">
           <div class="row">
             <div class="col s4 left">
-              <a class="app-logo red-text text-darken-2"  href="/"><span class="app-name">Runners-PWA</span><img class="app-img" src="/img/icon.png" alt=""></a></div>
+              <a class="app-logo"  href="/"><span class="app-name">Runners-PWA</span><img class="app-img" src="/img/icon.png" alt=""></a></div>
             <!-- menu button -->
             <div class="col s4 right">
               <i class="material-icons sidenav-trigger vertical-align" data-target="side-menu">menu</i>

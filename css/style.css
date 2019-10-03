@@ -1,3 +1,9 @@
+:root {
+  --primary: #fbc02d;
+  --secondary: #1976d2;
+  --title: #d32f2f;
+}
+
 /* layout styles */
 
 body {
@@ -14,6 +20,7 @@ main {
 
 footer {
   padding-top: 10px !important;
+  background: var(--primary) !important;
 }
 
 .sidenav-trigger {
@@ -42,6 +49,7 @@ a.app-logo {
 .app-name {
   display: block;
   white-space: nowrap;
+  color: var(--title);
 }
 
 #scrollPage {
@@ -70,7 +78,9 @@ a.app-logo {
   font-weight: bold;
 }
 
-
+.btn-large {
+  background-color: var(--secondary) !important;
+}
 
 /* run card styles */
 
@@ -84,5 +94,40 @@ a.app-logo {
 
 .run-title {
   font-size: 1.05em;
+  font-weight: 400;
+}
+
+/* overview table layout */
+
+.runOverview{
+  margin-top: 25px;#1976d2
+  font-size: 1.05em;
+}
+
+.runOverview th{
+  font-size: 1.4em;
+  font-weight: 600;
+  color: #757575;
+}
+
+.runOverview tr {
+  line-height: 45px !important;
+}
+
+.runOverview td:not(.rowDescribtor) {
+  background-color: #cfd8dc;
+  width: 80px;
+  text-align: center;
+  font-size: 1.3em;
+}
+
+.rowDescribtor {
+  font-weight: 500;
+  font-size: 1.4em
+}
+
+.units {
+  color: #bdbdbd;
+  font-size: 0.8em;
   font-weight: 400;
 }
