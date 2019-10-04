@@ -18,8 +18,13 @@ function timer() {
 
   var distance = now - startDate;
 
+  var hours = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
   var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
   var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+  if(hours < 10){
+    hours = "0" + hours;
+  }
 
   if(minutes < 10){
     minutes = "0" + minutes;
@@ -29,9 +34,9 @@ function timer() {
     seconds = "0" + seconds;
   }
 
-  timerCount.innerHTML = minutes + ":" + seconds;
+  timerCount.innerHTML = hours + ":" + minutes + ":" + seconds;
 
-  console.log(minutes + ":" + seconds);
+  console.log(hours + ":" + minutes + ":" + seconds);
 }
 
 // Starts the timer
