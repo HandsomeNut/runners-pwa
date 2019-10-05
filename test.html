@@ -46,6 +46,20 @@
         alert(lat + " " + lon);
 
       })
+);
+
+function tryKeepScreenAlive(minutes) {
+      const controller = new AbortController();
+      const signal = controller.signal;
+
+      WakeLock.request("screen", { signal });
+
+      setTimeout(() => controller.abort(), minutes * 60 * 1000);
+
+      console.log("halte den sceen am Leben")
+    }
+
+    tryKeepScreenAlive(10);
 
     </script>
   </body>

@@ -36,6 +36,12 @@ function timer() {
 
   timerCount.innerHTML = hours + ":" + minutes + ":" + seconds;
 
+  if(distance%5 === 0){
+    // getDistance()
+    // getSpeed()
+    // getCalories()
+  };
+
   console.log(hours + ":" + minutes + ":" + seconds);
 }
 
