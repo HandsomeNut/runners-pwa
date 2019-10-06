@@ -1,14 +1,16 @@
 
+// declare important variables
 var running = false;
 var startDate = 0
 var i = 0;
-
-
 var runTime;
 
-
-timerCount = document.getElementById("timer")
-
+// elements for ui manipulation
+timerDisplay = document.getElementById("timer");
+distanceDisplay = document.getElementById("distance");
+speedDisplay = document.getElementById("speed");
+caloriesDisplay = document.getElementById("calories");
+speedAvgDisplay = document.getElementById("speedAvg");
 startBtn = document.getElementById("startBtn");
 
 //  timer counting up
@@ -34,8 +36,9 @@ function timer() {
     seconds = "0" + seconds;
   }
 
-  timerCount.innerHTML = hours + ":" + minutes + ":" + seconds;
+  timerDisplay.innerHTML = hours + ":" + minutes + ":" + seconds;
 
+  // update additional timer infos
   if(distance%5 === 0){
     // getDistance()
     // getSpeed()
