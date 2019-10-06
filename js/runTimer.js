@@ -4,7 +4,7 @@ var running = false;
 var startDate = 0
 var i = 0;
 var runTime;
-var distance = "0,00"
+var distance = 0
 var startPos;
 var startPosSet = false;
 var currentPos;
@@ -40,7 +40,7 @@ timer = () => {
     getPosition();
   }
   if(difference%5 === 0){
-    distance = (Math.round(getDistance() * 100) / 100);
+    distance += (Math.round(getDistance() * 100) / 100);
     // getSpeed()
     // getCalories()
   };
@@ -75,8 +75,8 @@ getPosition = () => {
   var geoSuccess = function(position) {
     if(startPosSet){
       setCurrentPos(position);
-    } else {setStartPos(position);}
-    console.log("Start Pos gesetzt", startPos);
+      console.log("curPos gesetzt")
+    } else {setStartPos(position); console.log("Start Pos gesetzt", startPos);}
   };
   var geoError = function(error) {
     console.log('Error occurred. Error code: ' + error.code);
@@ -87,7 +87,7 @@ getPosition = () => {
     //   3: timed out
   };
 
-  console.log(navigator.geolocation.getCurrentPosition(geoSuccess, geoError, geoOptions));
+  navigator.geolocation.getCurrentPosition(geoSuccess, geoError, geoOptions);
 
 };
 
@@ -106,6 +106,13 @@ getDistance = () => {
           Math.sin(dLon/2) * Math.sin(dLon/2);
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
   var distance = R * c; // Distance in km
+  console.log(!setStartPos);
+  if(!setStartPos){
+    startPos = currentPos;
+    startPosSet = true;
+  }
+
+
   return distance;
 };
 
@@ -123,8 +130,9 @@ setStartPos = (position) => {
 
 setCurrentPos = (position) => {
   currentPos = position;
+  startPosSet = false;
 };
-getPosition();
+
 // on click of the play button
 startBtn.addEventListener("click", evt =>{
   if(running){
