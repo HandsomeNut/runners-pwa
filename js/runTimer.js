@@ -4,7 +4,9 @@ var running = false;
 var startDate = 0
 var i = 0;
 var runTime;
-var distance = 0
+var distance = 0;
+var distanceAdded = 0;
+var speed = 0;
 var startPos;
 var startPosSet = false;
 var currentPos;
@@ -36,15 +38,18 @@ timer = () => {
 
   difference = Math.round(difference / 1000)
   // update additional timer infos
-  if(difference%4 === 0){
+  if(difference%3 === 0){
     getPosition();
   }
   if(difference%5 === 0){
-    distance += (Math.round(getDistance() * 100) / 100);
-    // getSpeed()
+    distanceAdded = getDistance();
+    distance += distanceAdded;
+    speed = getSpeed(distance, difference);
     // getCalories()
+
+    renderLog(distanceAdded, startPos, currentPos, difference/5);
   };
-  updateInfo(time, distance);
+  updateInfo(time, Math.round(distance * 100) / 100, speed);
   console.log(hours + ":" + minutes + ":" + seconds);
 };
 
@@ -132,6 +137,13 @@ setCurrentPos = (position) => {
   currentPos = position;
   startPosSet = false;
 };
+
+getSpeed = (distance, difference) => {
+  let currentSpeed;
+  currentSpeed = (distance / difference)*3600
+
+  return Math.round(currentSpeed*100)/100
+}
 
 // on click of the play button
 startBtn.addEventListener("click", evt =>{

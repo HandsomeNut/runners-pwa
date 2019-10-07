@@ -21,6 +21,11 @@ main {
 footer {
   padding-top: 10px !important;
   background: var(--primary) !important;
+
+  /* only for log and bugfixing */
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 }
 
 .sidenav-trigger {
@@ -54,9 +59,7 @@ a.app-logo {
 
 #scrollPage {
   /* history page only */
-  position: fixed;
-  bottom: 0;
-  width: 100%;
+
 }
 
 /* Timer page styles */
