@@ -5,15 +5,19 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 // elements for ui manipulation
-caloriesDisplay = document.getElementById("calories");
-speedAvgDisplay = document.getElementById("speedAvg");
-startBtn = document.getElementById("startBtn");
+
+const btnViewLog = document.getElementById("btnViewLog");
+const caloriesDisplay = document.getElementById("calories");
+const speedAvgDisplay = document.getElementById("speedAvg");
+const startBtn = document.getElementById("startBtn");
 const tracker = document.querySelector(".tracker");
 
+btnViewLog.addEventListener("click", viewLogs)
+
 updateInfo = (time, distance) => {
-  timerDisplay = document.getElementById("timer");
-  distanceDisplay = document.getElementById("distance");
-  speedDisplay = document.getElementById("speed");
+  const timerDisplay = document.getElementById("timer");
+  const distanceDisplay = document.getElementById("distance");
+  const speedDisplay = document.getElementById("speed");
 
   timerDisplay.innerHTML = time;
   distanceDisplay.innerHTML = distance;

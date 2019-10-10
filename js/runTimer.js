@@ -74,7 +74,8 @@ if (navigator.geolocation) {
 getPosition = () => {
   var currentPos;
   var geoOptions = {
-     timeout: 10 * 1000
+     timeout: 10 * 1000,
+     enableHighAccuracy: true
   }
 
   var geoSuccess = function(position) {
@@ -151,6 +152,7 @@ startBtn.addEventListener("click", evt =>{
     startBtn.innerHTML = "play_arrow";
     setStartPos = false;
     running = false;
+    addNote();
     stopRun();
   } else {
     startBtn.innerHTML = "pause";
@@ -158,6 +160,7 @@ startBtn.addEventListener("click", evt =>{
     startDate = new Date().getTime();
     console.log("Hamlo I bims", startPos);
     getPosition();
+    addDB();
     startRun();
   }
 });
