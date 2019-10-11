@@ -1,7 +1,9 @@
 
 // declare important variables
 var running = false;
-var startDate = 0
+var todayDate;
+var dateString;
+var startTime = 0;
 var i = 0;
 var runTime;
 var distance = 0;
@@ -16,7 +18,7 @@ timer = () => {
 
   var now = new Date().getTime();
 
-  var difference = now - startDate;
+  var difference = now - startTime;
 
   var hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
   var minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
@@ -47,10 +49,9 @@ timer = () => {
     speed = getSpeed(distance, difference);
     // getCalories()
 
-    renderLog(distanceAdded, startPos, currentPos, difference/5);
+    renderErrorLog(distanceAdded, startPos, currentPos, difference/5);
   };
   updateInfo(time, Math.round(distance * 100) / 100, speed);
-  console.log(hours + ":" + minutes + ":" + seconds);
 };
 
 // Starts the timer
@@ -65,7 +66,7 @@ const stopRun = () => {
 
 // test for geolocation
 if (navigator.geolocation) {
-  alert('Geolocation is supported!');
+  console.log('Geolocation is supported!');
 } else {
   alert('Geolocation is not supported for this Browser/OS.');
 };
@@ -146,21 +147,58 @@ getSpeed = (distance, difference) => {
   return Math.round(currentSpeed*100)/100
 }
 
+// makes a date string out of the date object
+makeDateString = () => {
+
+  weekdays = ["So.", "Mo.", "Di.", "Mi.", "Do.", "Fr.", "Sa."];
+
+  month = todayDate.getMonth() + 1;
+  day = todayDate.getDate();
+  year = todayDate.getFullYear();
+  hour = todayDate.getHours();
+  minute = todayDate.getMinutes();
+  weekday = todayDate.getDay();
+
+  if(minute < 10){
+    minute = "0" + minute;
+  };
+
+  if(hour < 10){
+    hour = "0" + hour;
+  };
+
+  if(day < 10){
+    day = "0" + day;
+  };
+
+  if(month < 10){
+    month = "0" + month;
+  }
+
+  dateString = weekdays[weekday] + ", " + day + "." + month + "." + year.toString().substr(-2);
+  dateID = parseInt(`${year}${month}${day}${hour}${minute}`);
+  console.log(dateID, dateString);
+
+}
+
 // on click of the play button
 startBtn.addEventListener("click", evt =>{
   if(running){
     startBtn.innerHTML = "play_arrow";
-    setStartPos = false;
+    startPosSet = false;
     running = false;
-    addNote();
+    // stopping run and adding log to DB
     stopRun();
+    makeDateString();
+    addLog();
   } else {
     startBtn.innerHTML = "pause";
     running = true;
-    startDate = new Date().getTime();
+    // get Date of today and precise Starttime
+    todayDate = new Date()
+    startTime = todayDate.getTime();
     console.log("Hamlo I bims", startPos);
     getPosition();
-    addDB();
     startRun();
   }
 });

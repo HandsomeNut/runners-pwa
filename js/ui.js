@@ -4,27 +4,27 @@ document.addEventListener("DOMContentLoaded", function() {
   M.Sidenav.init(menus, {edge: "right"});
 });
 
-// elements for ui manipulation
 
-const btnViewLog = document.getElementById("btnViewLog");
+// elements for ui manipulation
 const caloriesDisplay = document.getElementById("calories");
 const speedAvgDisplay = document.getElementById("speedAvg");
 const startBtn = document.getElementById("startBtn");
 const tracker = document.querySelector(".tracker");
-
-btnViewLog.addEventListener("click", viewLogs)
+var timerDisplay;
+var distanceDisplay;
+var speedDisplay;
 
 updateInfo = (time, distance) => {
-  const timerDisplay = document.getElementById("timer");
-  const distanceDisplay = document.getElementById("distance");
-  const speedDisplay = document.getElementById("speed");
+  timerDisplay = document.getElementById("timer");
+  distanceDisplay = document.getElementById("distance");
+  speedDisplay = document.getElementById("speed");
 
   timerDisplay.innerHTML = time;
   distanceDisplay.innerHTML = distance;
   speedDisplay.innerHTML = speed;
 };
 
-renderLog = (distanceAdded, pos1, pos2, num) => {
+renderErrorLog = (distanceAdded, pos1, pos2, num) => {
 
   const timeStamp = new Date()
 

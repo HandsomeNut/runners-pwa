@@ -1,3 +1,5 @@
+
+
 if (!('indexedDB' in window)) {
   console.log('This browser doesn\'t support IndexedDB');
 } else {
@@ -5,44 +7,47 @@ if (!('indexedDB' in window)) {
 }
 
 let db = null;
-function addDB() {
-  const request = indexedDB.open("history");
+
+function openDB() {
+  const request = indexedDB.open("runnersPwa");
 
   // on upgrade needed
   request.onupgradeneeded = evt => {
+
     db = evt.target.result;
 
-    // notes = {
-    //   title: "note1",
-    //   text: "this is a note"
-    // }
-    const pLog = db.createObjectStore("personal_log", {keyPath: "title"});
-    const nextLog = db.createObjectStore("next_log", {keyPath: "title"});
+    const history = db.createObjectStore("history", {keyPath: "dateID"});
+    const settings = db.createObjectStore("settings", {keyPath: "title"});
 
-    console.log(`upgrade is called ${db.name} version ${db.version}`);
+    console.log(`Upgrade is called ${db.name} version ${db.version}`);
+
   };
 
   // on Success
   request.onsuccess = evt => {
     db = evt.target.result;
-    console.log(`success is called ${db.name} version ${db.version}`);
+    console.log(`${db.name} version ${db.version} is successfully called`);
   };
 
   // on error
   request.onerror = err => {
-    console.log("Error detected!");
+    console.log(`Error detected! ${err}`);
   };
+
 }
 
 
-function addNote() {
+function addLog() {
 
   const log = {
-    title: "note1" + Math.random(),
-    text: "this is a note"
+    dateID: dateID,
+    distance: distanceDisplay.textContent,
+    time: timerDisplay.textContent,
+    date: dateString,
+    month: todayDate.getMonth()
   };
 
-  const transaction = db.transaction(["personal_log"], "readwrite");
+  const transaction = db.transaction(["history"], "readwrite");
 
   transaction.oncomplete = function(evt) {
     console.log("Transaction success", evt);
@@ -52,43 +57,17 @@ function addNote() {
     console.log("An Error occurred", err);
   };
 
-  const newLog = transaction.objectStore("personal_log");
+  const newLog = transaction.objectStore("history");
 
   console.log(newLog);
-
-  // date = new Date();
-  // month = date.getMonth() + 1;
-  // day = date.getDate();
-  // year = date.getFullYear();
-  // hour = date.getHours();
-  // minute = date.getMinutes()
-  //
-  // if(minute < 10){
-  //   minute = "0" + minute;
-  // };
-  //
-  // if(hour < 10){
-  //   hour = "0" + hour;
-  // };
-  //
-  // if(day < 10){
-  //   day = "0" + day;
-  // };
-  //
-  // if(month < 10){
-  //   month = "0" + month;
-  // }
-  //
-  // date = parseInt(`1${hour}${minute}${day}${month}${year}`);
-  // console.log(date);
 
   newLog.add(log);
 
 };
 
-function viewLogs() {
+function getLogs() {
 
-  const transaction = db.transaction("personal_log", "readonly");
+  const transaction = db.transaction("history", "readonly");
 
   transaction.oncomplete = function(evt) {
     console.log("Transaction success", evt);
@@ -98,18 +77,30 @@ function viewLogs() {
     console.log("An Error occurred", err);
   };
 
-  const pLog = transaction.objectStore("personal_log");
+  const historyDB = transaction.objectStore("history");
 
-  const request = pLog.openCursor();
+  const request = historyDB.openCursor();
 
   request.onsuccess = evt => {
     const cursor = evt.target.result;
 
     if (cursor) {
       console.log(`${cursor.key} | ${cursor.value.title}, ${cursor.value.text} `)
+
+      const id = cursor.value.dateID;
+      const distance = cursor.value.distance;
+      const time = cursor.value.time;
+      const date = cursor.value.date;
+      const month = cursor.value.month;
+
+      renderLog(id, distance, time, date, month);
       // do sth with the cursor
       cursor.continue();
     }
   };
 
+};
+
+window.onload = function() {
+  openDB();
 };
