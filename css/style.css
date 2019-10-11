@@ -87,6 +87,10 @@ a.app-logo {
 
 /* run card styles */
 
+.historyHead {
+  margin-left: 0.6em;
+}
+
 .run-month {
   margin-top: 20px;
 }
