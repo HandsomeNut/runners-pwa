@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="de" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, intial-scale=1.0">
+    <meta name="X-UA-Compatible" content="ie=edge">
+    <title>Runners PWA</title>
+
+    <!-- adding stylesheets -->
+    <link rel="stylesheet" href="/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/nouislider.css">
+
+    <link rel="manifest" href="/manifest.json">
+
+
+    <script type="text/javascript" src="/js/materialize.min.js"></script>
+  </head>
+  <body>
+
+      <!-- main content -->
+      <main>
+        <h5 class="grey-text siteHead">Einstellungen</h5>
+        <div class="settings container black-text text-darken-1">
+          <div class="row gpsSetting">
+            <div class="col s6">
+              <div class="switch">
+                <label>
+                  Aus
+                  <input id="gpsSetting" type="checkbox" checked>
+                  <span class="lever"></span>
+                  An
+                </label>
+              </div>
+            </div>
+            <div class="col s6"><span class="right">GPS-Lokalisierung</span></div>
+          </div>
+          <div class="divider"></div>
+          <h6 class="grey-text">Laufeinstellungen</h6>
+          <div class="input-field col s10 center">
+            <select id="runType">
+              <option value="1" selected>Unbegrenzt laufen</option>
+              <option value="2">Begrenzt laufen</option>
+              <option value="3">Interval laufen</option>
+            </select>
+          </div>
+          <!-- Run settings area -->
+          <div class="runSettings grey-text">
+            <div class="row">
+              <div class="col s3 settingDescription">
+                Läufe
+              </div>
+              <div class="col s9">
+                <div id="runNumber" class="input-field">
+                  <select disabled>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                  </select>
+                  <label>Anzahl Läufe</label>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div id="runLengthDisplay" class="col s3 settingDescription">
+                0 min
+              </div>
+              <div class="col s9">
+                <form action="#">
+                  <p class="range-field">
+                    <input value = "0" type="range" id="runLength" min="0" max="120" disabled/>
+                  </p>
+                </form>
+              </div>
+          </div>
+          <div class="divider"></div>
+          </div>
+
+        <!-- Pause settins Area -->
+        <div class="pauseSettings grey-text">
+          <div class="row">
+            <div class="col s3 settingDescription">
+              Pausen
+            </div>
+            <div class="col s9">
+              <div id="pauseNumber" class="input-field">
+                <select disabled>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                </select>
+                <label>Anzahl Pausen</label>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div id="pauseLengthDisplay" class="col s3 settingDescription">
+              0 min
+            </div>
+            <div class="col s9">
+              <form action="#">
+                <p class="range-field">
+                  <input value = "0" type="range" id="pauseLength" min="0" max="120" disabled/>
+                </p>
+              </form>
+            </div>
+
+        </div>
+        <div class="divider"></div>
+        </div>
+        <!-- warmup & Cooldown Area -->
+        <div class="warmupSettings grey-text">
+          <div class="col s3 settingDescription">
+            WarmUp & Cooldown
+          </div>
+          <div class="row">
+            <div id="warmupLengthDisplay" class="col s3 settingDescription">
+              0 min
+            </div>
+            <div class="col s9">
+              <form action="#">
+                <p class="range-field">
+                  <input value = "0" type="range" id="warmupLength" min="0" max="120" disabled/>
+                </p>
+              </form>
+            </div>
+
+        </div>
+        <div class="divider"></div>
+        </div>
+      </main>
+
+      <!-- sidenav -->
+      <ul id="side-menu" class="sidenav side-menu">
+        <li><a class="subheader">RUNNERS PWA</a></li>
+        <li><a href="/" class="waves-effect"><i class="material-icons">directions_run</i>Laufen</a></li>
+        <li><a href="/pages/history.html" class="waves-effect"><i class="material-icons">list</i>Verlauf</a></li>
+        <li><a href="/pages/overview.html" class="waves-effect"><i class="material-icons">event_note</i>Übersicht</a></li>
+        <li><a href="/pages/settings.html" class="waves-effect"><i class="material-icons">settings_applications</i>Einstellungen</a></li>
+        <li><div class="divider"></div></li>
+        <li><a href="/pages/contact.html" class="waves-effect">
+          <i class="material-icons">mail_outline</i>Kontakt</a>
+        </li>
+      </ul>
+
+
+      <footer class="page-footer scrollPage">
+
+        <div class="center container">
+          <div class="row">
+            <div class="col s4 left"><a class="app-logo"  href="/"><span class="app-name">Runners-PWA</span><img class="app-img" src="/img/icon.png" alt=""></a></div>
+            <!-- menu button -->
+            <div class="col s4 right">
+              <i class="material-icons sidenav-trigger vertical-align" data-target="side-menu">menu</i>
+            </div>
+          </div>
+        </div>
+
+
+      </footer>
+
+      <script src="/js/db.js"></script>
+      <script src="/js/app.js"></script>
+      <script src="/js/ui.js"></script>
+      <script type="text/javascript">
+        const runLengthDisplay = document.getElementById("runLengthDisplay");
+        const runLength = document.getElementById("runLength");
+        const pauseLengthDisplay = document.getElementById("pauseLengthDisplay");
+        const pauseLength = document.getElementById("pauseLength");
+        runLengthDisplay.innerHTML = runLength.value + " min";
+
+        const warmupLengthDisplay = document.getElementById("warmupLengthDisplay");
+        const warmupLength = document.getElementById("warmupLength");
+        warmupLengthDisplay.innerHTML = warmupLength.value + " min";
+
+        pauseLengthDisplay.innerHTML = pauseLength.value + " min"
+        runLength.addEventListener("click", function(evt){
+          console.log(runLength);
+          runLengthDisplay.innerHTML = runLength.value + " min"
+        });
+        pauseLength.addEventListener("click", function(evt){
+          console.log(pauseLength);
+          pauseLengthDisplay.innerHTML = pauseLength.value + " min"
+        });
+        warmupLength.addEventListener("click", function(evt){
+          console.log(warmupLength);
+          warmupLengthDisplay.innerHTML = warmupLength.value + " min"
+        });
+      </script>
+
+  </body>
+</html>

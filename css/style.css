@@ -16,6 +16,10 @@ main {
   flex: 1 0 auto;
 }
 
+.siteHead {
+  margin-left: 0.6em;
+}
+
 /* bottom footer bar styles */
 
 footer {
@@ -87,10 +91,6 @@ a.app-logo {
 
 /* run card styles */
 
-.historyHead {
-  margin-left: 0.6em;
-}
-
 .run-month {
   margin-top: 20px;
 }
@@ -137,4 +137,23 @@ a.app-logo {
   color: #bdbdbd;
   font-size: 0.8em;
   font-weight: 400;
+}
+
+/* settings style */
+
+.gpsSetting {
+  margin-top: 20px;
+  /* margin-bottom: 20px; */
+}
+
+.settingDescription {
+  padding-top: 1.85em !important;
+}
+
+.settings .row {
+  margin-bottom: 15px;
+}
+
+.settings .col {
+  max-height: 50px;
 }
