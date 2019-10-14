@@ -49,7 +49,7 @@ timer = () => {
     speed = getSpeed(distance, difference);
     // getCalories()
 
-    renderErrorLog(distanceAdded, startPos, currentPos, difference/5);
+    // renderErrorLog(distanceAdded, startPos, currentPos, difference/5);
   };
   updateInfo(time, Math.round(distance * 100) / 100, speed);
 };
@@ -121,7 +121,28 @@ getDistance = () => {
 
 
   return distance;
+};renderErrorLog = (distanceAdded, pos1, pos2, num) => {
+
+  const timeStamp = new Date()
+
+  const html = `
+  <div class="log card-panel">
+    <h6>Log: ${num}</h6>
+    <p>${timeStamp}</p>
+    <p>${distanceAdded}km</p>
+    <p>${pos1.coords.latitude} | ${pos1.coords.longitude}</p>
+    <p>${pos2.coords.latitude} | ${pos2.coords.longitude}</p>
+  </div>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  `
+
+  tracker.innerHTML += html;
 };
+
 
 /** Converts numeric degrees to radians */
 if (typeof(Number.prototype.toRad) === "undefined") {
@@ -133,6 +154,27 @@ if (typeof(Number.prototype.toRad) === "undefined") {
 setStartPos = (position) => {
   startPos = position;
   startPosSet = true;
+};
+renderErrorLog = (distanceAdded, pos1, pos2, num) => {
+
+  const timeStamp = new Date()
+
+  const html = `
+  <div class="log card-panel">
+    <h6>Log: ${num}</h6>
+    <p>${timeStamp}</p>
+    <p>${distanceAdded}km</p>
+    <p>${pos1.coords.latitude} | ${pos1.coords.longitude}</p>
+    <p>${pos2.coords.latitude} | ${pos2.coords.longitude}</p>
+  </div>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  `
+
+  tracker.innerHTML += html;
 };
 
 setCurrentPos = (position) => {

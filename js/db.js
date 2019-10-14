@@ -37,6 +37,7 @@ function openDB() {
 }
 
 
+// add new database objectstores
 function addLog() {
 
   const log = {
@@ -65,7 +66,41 @@ function addLog() {
 
 };
 
-function getLogs() {
+const addSettings = (gps, runType, runCount, runLength, pauseCount, pauseLength, warmupLength) => {
+  const gpsSetting = {
+    title: "gps",
+    checked: gps
+  };
+
+  const runSetting = {
+    title: "run",
+    runType: runType,
+    runCount: runCount,
+    runLength: runLength,
+    pauseCount: pauseCount,
+    pauseLength: pauseLength,
+    warmupLength: warmupLength,
+  };
+
+  const transaction = db.transaction("settings", "readwrite");
+
+  transaction.oncomplete = function(evt) {
+    console.log("Transaction success", evt);
+  };
+
+  transaction.onerror = function(err) {
+    console.log("An Error occurred", err);
+  };
+
+  const updateSettings = transaction.objectStore("settings");
+
+  updateSettings.put(gpsSetting);
+  updateSettings.put(runSetting);
+
+}
+
+//  get objectstores
+const getLogs = () => {
 
   const transaction = db.transaction("history", "readonly");
 
@@ -99,6 +134,59 @@ function getLogs() {
     }
   };
 
+};
+
+const getSettings = () => {
+  const transaction = db.transaction("settings", "readonly");
+
+  transaction.oncomplete = function(evt) {
+    console.log("Transaction success", evt);
+  };
+
+  transaction.onerror = function(err) {
+    console.log("An Error occurred", err);
+  };
+
+  const settingsDB = transaction.objectStore("settings");
+
+  const request = settingsDB.openCursor();
+
+  request.onsuccess = evt => {
+    const cursor = evt.target.result;
+
+    if (cursor) {
+      console.log(`${cursor.key} | ${cursor.value.title}`)
+
+      if(cursor.key === "gps") {
+        loadGpsSetting(cursor.value.checked);
+      } else {
+        loadRunSetting(cursor.value);
+      }
+      // do sth with the cursor
+      cursor.continue()
+    }
+  };
+};
+
+// clear settingsDB
+const clearSettings = () => {
+  const transaction = db.transaction("settings", "readwrite");
+
+  transaction.oncomplete = function(evt) {
+    console.log("Transaction success", evt);
+  };
+
+  transaction.onerror = function(err) {
+    console.log("An Error occurred", err);
+  };
+
+  const settingsDB = transaction.objectStore("settings");
+
+  const request = settingsDB.clear();
+
+  request.onsuccess = function(evt) {
+    console.log("Was successfully cleared!")
+  };
 };
 
 window.onload = function() {

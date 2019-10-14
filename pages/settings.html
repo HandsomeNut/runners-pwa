@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/nouislider.css">
 
     <link rel="manifest" href="/manifest.json">
 
@@ -28,7 +27,7 @@
               <div class="switch">
                 <label>
                   Aus
-                  <input id="gpsSetting" type="checkbox" checked>
+                  <input id="gpsSetting" type="checkbox">
                   <span class="lever"></span>
                   An
                 </label>
@@ -46,14 +45,14 @@
             </select>
           </div>
           <!-- Run settings area -->
-          <div class="runSettings grey-text">
+          <div id="runSettings">
             <div class="row">
               <div class="col s3 settingDescription">
                 Läufe
               </div>
               <div class="col s9">
-                <div id="runNumber" class="input-field">
-                  <select disabled>
+                <div class="input-field">
+                  <select id="runCount" disabled>
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
@@ -75,7 +74,7 @@
               <div class="col s9">
                 <form action="#">
                   <p class="range-field">
-                    <input value = "0" type="range" id="runLength" min="0" max="120" disabled/>
+                    <input value = "30" type="range" id="runLength" min="0" max="120" disabled/>
                   </p>
                 </form>
               </div>
@@ -84,14 +83,14 @@
           </div>
 
         <!-- Pause settins Area -->
-        <div class="pauseSettings grey-text">
+        <div id="pauseSettings">
           <div class="row">
             <div class="col s3 settingDescription">
               Pausen
             </div>
             <div class="col s9">
-              <div id="pauseNumber" class="input-field">
-                <select disabled>
+              <div  class="input-field">
+                <select id="pauseCount" disabled>
                   <option value="1">1</option>
                   <option value="2">2</option>
                   <option value="3">3</option>
@@ -122,7 +121,7 @@
         <div class="divider"></div>
         </div>
         <!-- warmup & Cooldown Area -->
-        <div class="warmupSettings grey-text">
+        <div id="warmupSettings">
           <div class="col s3 settingDescription">
             WarmUp & Cooldown
           </div>
@@ -140,6 +139,14 @@
 
         </div>
         <div class="divider"></div>
+        </div>
+        <div class="row settingsBtns">
+          <div class="col s7">
+            <a id="saveSettings" class="left waves-effect waves-light btn">Speichern</a>
+          </div>
+          <div class="col s5">
+            <a id="resetSettings" class="right waves-effect waves-light btn">Reset</a>
+          </div>
         </div>
       </main>
 
@@ -175,31 +182,7 @@
       <script src="/js/db.js"></script>
       <script src="/js/app.js"></script>
       <script src="/js/ui.js"></script>
-      <script type="text/javascript">
-        const runLengthDisplay = document.getElementById("runLengthDisplay");
-        const runLength = document.getElementById("runLength");
-        const pauseLengthDisplay = document.getElementById("pauseLengthDisplay");
-        const pauseLength = document.getElementById("pauseLength");
-        runLengthDisplay.innerHTML = runLength.value + " min";
-
-        const warmupLengthDisplay = document.getElementById("warmupLengthDisplay");
-        const warmupLength = document.getElementById("warmupLength");
-        warmupLengthDisplay.innerHTML = warmupLength.value + " min";
-
-        pauseLengthDisplay.innerHTML = pauseLength.value + " min"
-        runLength.addEventListener("click", function(evt){
-          console.log(runLength);
-          runLengthDisplay.innerHTML = runLength.value + " min"
-        });
-        pauseLength.addEventListener("click", function(evt){
-          console.log(pauseLength);
-          pauseLengthDisplay.innerHTML = pauseLength.value + " min"
-        });
-        warmupLength.addEventListener("click", function(evt){
-          console.log(warmupLength);
-          warmupLengthDisplay.innerHTML = warmupLength.value + " min"
-        });
-      </script>
+      <script src="/js/settings.js"></script>
 
   </body>
 </html>

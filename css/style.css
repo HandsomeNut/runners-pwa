@@ -25,11 +25,12 @@ main {
 footer {
   padding-top: 10px !important;
   background: var(--primary) !important;
+  z-index: 10;
 
-  /* only for log and bugfixing */
+  /* only for log and bugfixing
   position: fixed;
   bottom: 0;
-  width: 100%;
+  width: 100%; */
 }
 
 .sidenav-trigger {
@@ -63,7 +64,9 @@ a.app-logo {
 
 #scrollPage {
   /* history page only */
-
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 }
 
 /* Timer page styles */
@@ -156,4 +159,35 @@ a.app-logo {
 
 .settings .col {
   max-height: 50px;
+}
+
+.settingsBtns {
+  margin-top: 10px;
+}
+/* Settingsbutton color */
+#saveSettings, #resetSettings {
+  background-color: var(--secondary) !important;
+}
+ /* slider dot  */
+input[type=range]::-webkit-slider-thumb {
+    background-color: var(--secondary);
+  }
+  input[type=range]::-moz-range-thumb {
+    background-color: var(--secondary);
+  }
+  input[type=range]::-ms-thumb {
+    background-color: var(--secondary);
+  }
+
+/* setting gps switch knob color and background when checked */
+input[type="checkbox"]:checked + .lever {
+  background-color: var(--primary) !important;
+}
+
+.switch input[type="checkbox"] + .lever:after{
+  background-color: var(--secondary) !important;
+}
+
+#runSettings, #pauseSettings, #warmupSettings {
+  color: grey;
 }
