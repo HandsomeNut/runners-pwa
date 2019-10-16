@@ -12,6 +12,7 @@ const caloriesDisplay = document.getElementById("calories");
 const speedAvgDisplay = document.getElementById("speedAvg");
 const startBtn = document.getElementById("startBtn");
 const tracker = document.querySelector(".tracker");
+const runProgress = document.getElementById("runProgress");
 var timerDisplay;
 var distanceDisplay;
 var speedDisplay;
@@ -56,7 +57,6 @@ const runType1 = () => {
   runType.value = 1;
   runCount.disabled = true;
   runLength.disabled = true;
-  pauseCount.disabled = true;
   pauseLength.disabled = true;
   warmupLength.disabled = true;
 
@@ -74,7 +74,6 @@ const runType2 = () => {
   runType.value = 2;
   runCount.disabled = true;
   runLength.disabled = false;
-  pauseCount.disabled = true;
   pauseLength.disabled = true;
   warmupLength.disabled = false;
 
@@ -92,7 +91,6 @@ const runType3 = () => {
   runType.value = 3;
   runCount.disabled = false;
   runLength.disabled = false;
-  pauseCount.disabled = false;
   pauseLength.disabled = false;
   warmupLength.disabled = false;
 

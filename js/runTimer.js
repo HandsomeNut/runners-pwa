@@ -12,6 +12,17 @@ var speed = 0;
 var startPos;
 var startPosSet = false;
 var currentPos;
+var intervalTime;
+
+// setting variables
+var gps;
+var runType;
+var runLength;
+var runCount;
+var pauseLength;
+var pauseCount;
+var warmupLength;
+var completeLength;
 
 //  timer counting up
 timer = () => {
@@ -23,6 +34,7 @@ timer = () => {
   var hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
   var minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
   var seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
 
   if(hours < 10){
     hours = "0" + hours;
@@ -40,10 +52,10 @@ timer = () => {
 
   difference = Math.round(difference / 1000)
   // update additional timer infos
-  if(difference%3 === 0){
+  if(difference%3 === 0 && gps){
     getPosition();
   }
-  if(difference%5 === 0){
+  if(difference%5 === 0 && gps){
     distanceAdded = getDistance();
     distance += distanceAdded;
     speed = getSpeed(distance, difference);
@@ -51,17 +63,92 @@ timer = () => {
 
     // renderErrorLog(distanceAdded, startPos, currentPos, difference/5);
   };
+
   updateInfo(time, Math.round(distance * 100) / 100, speed);
+
+  // check for runtimes
+  if(runType != 1 && db != null){
+    checkRuntime(difference, now);
+  };
+
 };
+
+// Runtime function to account for different modes
+const checkRuntime = (difference, now) => {
+
+  let interval = Math.round((now - intervalTime)/1000);
+  let run = (pauseCount < runCount);
+  let pause = (pauseCount === runCount);
+  let warmup = (difference <= warmupLength * 60);
+  let cooldown = (difference <= completeLength * 60 && runCount === 0);
+  console.log(Math.floor(interval/60), interval, runLength, pauseLength, warmupLength , runCount, pauseCount)
+
+  progress = Math.floor((difference / (completeLength*60))*100);
+
+  console.log("progress:" + progress, completeLength)
+
+  runProgress.childNodes[1].style.width = progress + "%";
+
+  // Setting progressBar color
+  if(warmup){
+    console.log("warmup")
+    runProgress.childNodes[1].style.backgroundColor = "var(--title)";
+    if(difference === warmupLength * 60){
+      interval = 0;
+      intervalTime = now;
+    };
+  } else  if(cooldown) {
+    console.log("cooldown")
+    runProgress.childNodes[1].style.backgroundColor = "var(--title)";
+  } else if(run) {
+    console.log("run")
+    runProgress.childNodes[1].style.backgroundColor = "var(--primary)"
+  } else {
+    console.log("pause")
+    runProgress.childNodes[1].style.backgroundColor = "var(--secondary)";
+  };
+
+  let runDone = (interval === runLength * 60);
+  let pauseDone = (interval === pauseLength * 60);
+  let typeMatch = (runType === 3);
+
+  //check if phase is done
+  if(difference === completeLength * 60){
+    stopRun()
+  } else if(runDone && run && !warmup && !cooldown) {
+    intervalTime = now;
+    runCount--;
+  } else if(pauseDone && typeMatch && pause && !warmup && !cooldown) {
+    intervalTime = now;
+    pauseCount--;
+  };
+
+
+
+}
 
 // Starts the timer
 startRun = () => {
+  startBtn.innerHTML = "pause";
+  running = true;
+  // get Date of today and precise Starttime
+  todayDate = new Date();
+  startTime = todayDate.getTime();
+  // settingIntervalTime
+  intervalTime = startTime;
+  if(gps){getPosition()};
   runTime = setInterval(timer, 1000);
 };
 
 // stops the timer
 const stopRun = () => {
+  startBtn.innerHTML = "play_arrow";
+  startPosSet = false;
+  running = false;
+  // stop timer and add run to logs
   clearInterval(runTime);
+  makeDateString();
+  addLog();
 };
 
 // test for geolocation
@@ -97,7 +184,7 @@ getPosition = () => {
   navigator.geolocation.getCurrentPosition(geoSuccess, geoError, geoOptions);
 
 };
-
+true
 getDistance = () => {
 
   var lat2 = currentPos.coords.latitude;
@@ -121,28 +208,7 @@ getDistance = () => {
 
 
   return distance;
-};renderErrorLog = (distanceAdded, pos1, pos2, num) => {
-
-  const timeStamp = new Date()
-
-  const html = `
-  <div class="log card-panel">
-    <h6>Log: ${num}</h6>
-    <p>${timeStamp}</p>
-    <p>${distanceAdded}km</p>
-    <p>${pos1.coords.latitude} | ${pos1.coords.longitude}</p>
-    <p>${pos2.coords.latitude} | ${pos2.coords.longitude}</p>
-  </div>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  `
-
-  tracker.innerHTML += html;
 };
-
 
 /** Converts numeric degrees to radians */
 if (typeof(Number.prototype.toRad) === "undefined") {
@@ -151,11 +217,12 @@ if (typeof(Number.prototype.toRad) === "undefined") {
   }
 }
 
-setStartPos = (position) => {
+const setStartPos = (position) => {
   startPos = position;
   startPosSet = true;
 };
-renderErrorLog = (distanceAdded, pos1, pos2, num) => {
+
+const renderErrorLog = (distanceAdded, pos1, pos2, num) => {
 
   const timeStamp = new Date()
 
@@ -170,19 +237,20 @@ renderErrorLog = (distanceAdded, pos1, pos2, num) => {
   <br>
   <br>
   <br>
-  <br>
+  <br>makeDateString();
+    addLog();
   <br>
   `
 
   tracker.innerHTML += html;
 };
 
-setCurrentPos = (position) => {
+const setCurrentPos = (position) => {
   currentPos = position;
   startPosSet = false;
 };
 
-getSpeed = (distance, difference) => {
+const getSpeed = (distance, difference) => {
   let currentSpeed;
   currentSpeed = (distance / difference)*3600
 
@@ -190,7 +258,7 @@ getSpeed = (distance, difference) => {
 }
 
 // makes a date string out of the date object
-makeDateString = () => {
+const makeDateString = () => {
 
   weekdays = ["So.", "Mo.", "Di.", "Mi.", "Do.", "Fr.", "Sa."];
 
@@ -226,21 +294,50 @@ makeDateString = () => {
 // on click of the play button
 startBtn.addEventListener("click", evt =>{
   if(running){
-    startBtn.innerHTML = "play_arrow";
-    startPosSet = false;
-    running = false;
-    // stopping run and adding log to DB
     stopRun();
-    makeDateString();
-    addLog();
+
   } else {
-    startBtn.innerHTML = "pause";
-    running = true;
-    // get Date of today and precise Starttime
-    todayDate = new Date()
-    startTime = todayDate.getTime();
-    console.log("Hamlo I bims", startPos);
-    getPosition();
     startRun();
   }
+});
+
+// load settings
+
+const loadGpsSetting = (gpsLoad) => {
+  gps = gpsLoad;
+};
+
+const loadRunSetting = (runSetting) => {
+  runType = runSetting.runType;
+  runLength = runSetting.runLength;
+  pauseLength = runSetting.pauseLength;
+  warmupLength = runSetting.warmupLength;
+
+  // setting Pausecount
+  if(pauseLength === 0){
+    pauseCount = 0;
+  } else {
+    pauseCount = runCount - 1;
+  };
+
+  // setting RunCount and completeLength
+  if(runType === 2){
+    runCount = 1;
+    completeLength = runLength + (warmupLength * 2);
+  } else if(runType === 3){
+    runCount = runSetting.runCount;
+    completeLength = (runLength * runCount) + (pauseLength * pauseCount) + (warmupLength * 2);
+  };
+
+  console.log("loading settings!!!")
+  // show progressBar
+  if(runType != 1){
+    runProgress.style.display = "block";
+  };
+};
+
+// get settings
+document.addEventListener("DOMContentLoaded", function() {
+  console.log("catching settings")
+  setTimeout(function() {getSettings()}, 175)
 });

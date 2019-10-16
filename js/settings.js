@@ -9,26 +9,20 @@ const warmupLength = document.getElementById("warmupLength");
 const gpsSetting = document.getElementById("gpsSetting");
 const runType = document.getElementById("runType");
 const runCount = document.getElementById("runCount");
-const pauseCount = document.getElementById("pauseCount");
 
 // setting slider numbers to actual position
 const setSliderDisplay = () => {
-  runLengthDisplay.innerHTML = runLength.value + " min";
   pauseLengthDisplay.innerHTML = pauseLength.value + " min"
   warmupLengthDisplay.innerHTML = warmupLength.value + " min";
 }
 setSliderDisplay();
 
 // updating the slider Numbers
-runLength.addEventListener("click", function(){
-  console.log(runLength);
-  runLengthDisplay.innerHTML = runLength.value + " min"
-});
-pauseLength.addEventListener("click", function(){
+pauseLength.addEventListener("change", function(){
   console.log(pauseLength);
   pauseLengthDisplay.innerHTML = pauseLength.value + " min"
 });
-warmupLength.addEventListener("click", function(){
+warmupLength.addEventListener("change", function(){
   console.log(warmupLength);
   warmupLengthDisplay.innerHTML = warmupLength.value + " min"
 });
@@ -38,11 +32,25 @@ const saveSettings = document.getElementById("saveSettings");
 const resetSettings = document.getElementById("resetSettings");
 
 saveSettings.addEventListener("click", function(){
-  addSettings(gpsSetting.checked, runType.value, runCount.value, runLength.value, pauseCount.value, pauseLength.value, warmupLength.value);
+  if(isNaN(runLength.value)){
+    alert("Fehler! Falsche Eingabe!")
+    runLength.select();
+  } else {
+    addSettings(gpsSetting.checked, runType.value, runCount.value, runLength.value, pauseLength.value, warmupLength.value);
+  };
 });
 
 resetSettings.addEventListener("click", function(){
-  clearSettings();
+  if(confirm("Sollen die Einstellungen wirklich zurück gesetzt werden?")){
+    clearSettings();
+    gpsSetting.checked = false;
+    runLength.value = 0;
+    runCount.value = 1;
+    pauseLength.value = 0;
+    warmupLength.value = 0;
+    runType1();
+    window.location.reload();
+  }
 });
 
 // changing between runtypes
@@ -73,9 +81,9 @@ const loadRunSetting = (runSettings) => {
 
   console.log(runSettings.runType);
 
-  if(runSettings.runType === "1"){
+  if(runSettings.runType === 1){
     console.log("Unbegrenzt geladen")
-  } else if(runSettings.runType === "2") {
+  } else if(runSettings.runType === 2) {
     console.log("Passiert was");
     runType2();
   } else {
@@ -86,7 +94,6 @@ const loadRunSetting = (runSettings) => {
   // getting slider and dropdown data
   runCount.value = runSettings.runCount;
   runLength.value = runSettings.runLength;
-  pauseCount.value = runSettings.pauseCount;
   pauseLength.value = runSettings.pauseLength;
   warmupLength.value = runSettings.warmupLength;
 

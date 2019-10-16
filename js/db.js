@@ -6,7 +6,7 @@ if (!('indexedDB' in window)) {
   console.log("läuft!")
 }
 
-let db = null;
+var db = null;
 
 function openDB() {
   const request = indexedDB.open("runnersPwa");
@@ -66,7 +66,7 @@ function addLog() {
 
 };
 
-const addSettings = (gps, runType, runCount, runLength, pauseCount, pauseLength, warmupLength) => {
+const addSettings = (gps, runType, runCount, runLength, pauseLength, warmupLength) => {
   const gpsSetting = {
     title: "gps",
     checked: gps
@@ -74,12 +74,11 @@ const addSettings = (gps, runType, runCount, runLength, pauseCount, pauseLength,
 
   const runSetting = {
     title: "run",
-    runType: runType,
-    runCount: runCount,
-    runLength: runLength,
-    pauseCount: pauseCount,
-    pauseLength: pauseLength,
-    warmupLength: warmupLength,
+    runType: parseInt(runType),
+    runCount: parseInt(runCount),
+    runLength: parseInt(runLength),
+    pauseLength: parseInt(pauseLength),
+    warmupLength: parseInt(warmupLength),
   };
 
   const transaction = db.transaction("settings", "readwrite");

@@ -27,10 +27,10 @@ footer {
   background: var(--primary) !important;
   z-index: 10;
 
-  /* only for log and bugfixing
+  /* only for log and bugfixing */
   position: fixed;
   bottom: 0;
-  width: 100%; */
+  width: 100%;
 }
 
 .sidenav-trigger {
@@ -64,9 +64,9 @@ a.app-logo {
 
 #scrollPage {
   /* history page only */
-  position: fixed;
+  /* position: fixed;
   bottom: 0;
-  width: 100%;
+  width: 100%; */
 }
 
 /* Timer page styles */
@@ -92,6 +92,14 @@ a.app-logo {
   background-color: var(--secondary) !important;
 }
 
+#runProgress {
+  margin-top: 50px;
+}
+
+#runProgress .determinate {
+  background-color: var(--title);
+}
+
 /* run card styles */
 
 .run-month {
@@ -105,6 +113,10 @@ a.app-logo {
 .run-title {
   font-size: 1.05em;
   font-weight: 400;
+}
+
+.runs {
+  padding-bottom: 80px;
 }
 
 /* overview table layout */
@@ -162,7 +174,8 @@ a.app-logo {
 }
 
 .settingsBtns {
-  margin-top: 10px;
+  margin-top: 25px;
+  padding-bottom: 80px;
 }
 /* Settingsbutton color */
 #saveSettings, #resetSettings {

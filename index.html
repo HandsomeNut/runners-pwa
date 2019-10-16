@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="/css/style.css">
 
     <link rel="manifest" href="/manifest.json">
-value.title
 
     <script type="text/javascript" src="/js/materialize.min.js"></script>
   </head>
@@ -33,9 +32,9 @@ value.title
 
           <div class="center container tracking">
             <div class="row">
-              <div  class="col s4 tracking-info"><h5 id="speed">0:00</h5></div>
+              <div  class="col s4 tracking-info"><h5 id="speed">0</h5></div>
               <div  class="col s4 tracking-info"><h5 id="calories">0</h5></div>
-              <div  class="col s4 tracking-info"><h5 id="speedAvg">0:00</h5></div>
+              <div  class="col s4 tracking-info"><h5 id="speedAvg">0</h5></div>
               <div class="grey-text">
                 <div class="col s4">TEMPO</div>
                 <div class="col s4">KALORIEN</div>
@@ -45,8 +44,8 @@ value.title
             </div>
           </div>
           <div class="divider"></div>
-          <div class="progress">
-            <div class="determinate" style="width: 56%"></div>
+          <div id="runProgress" class="progress" style="display: none;">
+            <div class="determinate" style="width: 0%"></div>
           </div>
 
         </div>
