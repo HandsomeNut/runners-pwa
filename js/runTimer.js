@@ -14,9 +14,11 @@ var startPosSet = false;
 var currentPos;
 var intervalTime;
 
-// setting variables
-var gps;
-var runType;
+// general setting variables
+var gps = false;
+var voice = true;
+var sound = true;
+var runType = 1;
 var runLength;
 var runCount;
 var pauseLength;
@@ -89,15 +91,18 @@ const checkRuntime = (difference, now) => {
 
   runProgress.childNodes[1].style.width = progress + "%";
 
-  // Setting progressBar color
+  // Setting progressBar color and sound for warmup and cooldown
   if(warmup){
     console.log("warmup")
+    go.sound.onended = function(){warm.play()}
     runProgress.childNodes[1].style.backgroundColor = "var(--title)";
     if(difference === warmupLength * 60){
       interval = 0;
       intervalTime = now;
+      voiceAndSound(bing, runSound, 500);
     };
-  } else  if(cooldown) {
+  } else if(cooldown) {
+    pauseSound.sound.onended = function(){cool.play()}
     console.log("cooldown")
     runProgress.childNodes[1].style.backgroundColor = "var(--title)";
   } else if(run) {
@@ -108,6 +113,12 @@ const checkRuntime = (difference, now) => {
     runProgress.childNodes[1].style.backgroundColor = "var(--secondary)";
   };
 
+  // sound when close to the end
+  let lastPart = (interval === (runLength * 60) * 0.8);
+  if(runCount === 1 && run && lastPart && !warmup && !cooldown){
+    voiceAndSound(miep, almostDone, 1000);
+  };
+
   let runDone = (interval === runLength * 60);
   let pauseDone = (interval === pauseLength * 60);
   let typeMatch = (runType === 3);
@@ -115,15 +126,16 @@ const checkRuntime = (difference, now) => {
   //check if phase is done
   if(difference === completeLength * 60){
     stopRun()
+    voiceAndSound(bing, end, 500);
   } else if(runDone && run && !warmup && !cooldown) {
     intervalTime = now;
     runCount--;
+    voiceAndSound(bing, pauseSound, 500);
   } else if(pauseDone && typeMatch && pause && !warmup && !cooldown) {
     intervalTime = now;
     pauseCount--;
+    voiceAndSound(bing, runSound, 500);
   };
-
-
 
 }
 
@@ -138,6 +150,7 @@ startRun = () => {
   intervalTime = startTime;
   if(gps){getPosition()};
   runTime = setInterval(timer, 1000);
+  voiceAndSound(bing, go, 500);
 };
 
 // stops the timer
@@ -184,8 +197,8 @@ getPosition = () => {
   navigator.geolocation.getCurrentPosition(geoSuccess, geoError, geoOptions);
 
 };
-true
-getDistance = () => {
+
+const getDistance = () => {
 
   var lat2 = currentPos.coords.latitude;
   var lon2 = currentPos.coords.longitude;
@@ -303,8 +316,10 @@ startBtn.addEventListener("click", evt =>{
 
 // load settings
 
-const loadGpsSetting = (gpsLoad) => {
-  gps = gpsLoad;
+const loadGeneralSetting = (general) => {
+  gps = general.gps;
+  voice = general.voice;
+  sound = general.sound;
 };
 
 const loadRunSetting = (runSetting) => {
@@ -313,20 +328,23 @@ const loadRunSetting = (runSetting) => {
   pauseLength = runSetting.pauseLength;
   warmupLength = runSetting.warmupLength;
 
-  // setting Pausecount
-  if(pauseLength === 0){
-    pauseCount = 0;
-  } else {
-    pauseCount = runCount - 1;
-  };
-
   // setting RunCount and completeLength
   if(runType === 2){
     runCount = 1;
+    pauseCount = 0;
     completeLength = runLength + (warmupLength * 2);
   } else if(runType === 3){
     runCount = runSetting.runCount;
+
+    // setting Pausecount
+    if(pauseLength === 0){
+      pauseCount = 0;
+    } else {
+      pauseCount = runCount - 1;
+    };
+    
     completeLength = (runLength * runCount) + (pauseLength * pauseCount) + (warmupLength * 2);
+    console.log("runtime",completeLength , runLength, runCount, pauseLength, pauseCount, warmupLength)
   };
 
   console.log("loading settings!!!")
@@ -335,6 +353,39 @@ const loadRunSetting = (runSetting) => {
     runProgress.style.display = "block";
   };
 };
+
+// load Sound
+function audio(src, voiceSample, soundSample) {
+  this.sound = document.createElement("audio");
+  this.sound.src = src;
+  this.sound.setAttribute("preload", "auto");
+  this.sound.setAttribute("controls", "none");
+  this.sound.style.display = "none";
+  document.body.appendChild(this.sound);
+  this.play = function(){
+    if((sound&&soundSample) || (voice&&voiceSample)){
+      this.sound.play();
+    }
+  }
+  this.stop = function(){
+    this.sound.pause();
+  }
+}
+
+const voiceAndSound = (sound, voice, wait) => {
+  sound.play();
+  setTimeout(function(){voice.play()},wait);
+}
+
+const bing = new audio("/sound/bing.mp3", false, true);
+const miep = new audio("/sound/miep.mp3", false, true);
+const go = new audio("/sound/go.mp3", true, false);
+const runSound = new audio("/sound/run.mp3", true, false);
+const pauseSound = new audio("/sound/pause.mp3", true, false);
+const almostDone = new audio("/sound/almostDone.mp3", true, false);
+const end = new audio("/sound/end.mp3", true, false);
+const warm = new audio("/sound/warmup.mp3", true, false);
+const cool = new audio("/sound/cooldown.mp3", true, false);
 
 // get settings
 document.addEventListener("DOMContentLoaded", function() {

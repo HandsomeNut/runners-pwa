@@ -18,6 +18,7 @@ main {
 
 .siteHead {
   margin-left: 0.6em;
+  margin-bottom: 1.75em;
 }
 
 /* bottom footer bar styles */
@@ -140,46 +141,57 @@ a.app-logo {
   background-color: #cfd8dc;
   width: 80px;
   text-align: center;
-  font-size: 1.3em;
+  font-size: 1.1em;
 }
 
 .rowDescribtor {
   font-weight: 500;
-  font-size: 1.4em
+  font-size: 1.2em
 }
 
 .units {
   color: #bdbdbd;
-  font-size: 0.8em;
+  font-size: 0.6em;
   font-weight: 400;
 }
 
 /* settings style */
 
-.gpsSetting {
-  margin-top: 20px;
-  /* margin-bottom: 20px; */
-}
-
-.settingDescription {
-  padding-top: 1.85em !important;
-}
-
-.settings .row {
-  margin-bottom: 15px;
+.settings .divider{
+  margin: 25px 0;
 }
 
 .settings .col {
   max-height: 50px;
 }
 
+.settings .row {
+  margin-bottom: 5px;
+}
+
+.settingSwitch {
+  margin-top: 20px;
+}
+
+.settingDescription {
+  padding-top: 0.85em !important;
+}
+
+.clearBtn {
+  margin-top: 25px;
+}
+
 .settingsBtns {
   margin-top: 25px;
-  padding-bottom: 80px;
+  padding-bottom: 90px;
 }
 /* Settingsbutton color */
-#saveSettings, #resetSettings {
+#saveSettings {
   background-color: var(--secondary) !important;
+}
+
+#resetSettings, #clearLogs {
+  background-color: var(--title) !important;
 }
  /* slider dot  */
 input[type=range]::-webkit-slider-thumb {

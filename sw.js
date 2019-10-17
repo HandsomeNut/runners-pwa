@@ -1,6 +1,6 @@
 
-const staticCacheName = "site-static-v11"
-const dynamicCacheName = "site-dynamic-v8"
+const staticCacheName = "site-static-v12"
+const dynamicCacheName = "site-dynamic-v9"
 const assets = [
   "/",
   "/index.html",
@@ -12,6 +12,8 @@ const assets = [
   "/img/cloudy.png",
   "/img/sunny.png",
   "/img/sunny_s_cloudy.png",
+  "/sound/los.mp3",
+  "/sound/bing.mp3",
   'https://fonts.googleapis.com/icon?family=Material+Icons',
   'https://fonts.gstatic.com/s/materialicons/v48/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2'
 ]

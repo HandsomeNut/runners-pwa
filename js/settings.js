@@ -7,6 +7,8 @@ const warmupLengthDisplay = document.getElementById("warmupLengthDisplay");
 const warmupLength = document.getElementById("warmupLength");
 
 const gpsSetting = document.getElementById("gpsSetting");
+const voiceSetting = document.getElementById("voiceSetting");
+const soundSetting = document.getElementById("soundSetting");
 const runType = document.getElementById("runType");
 const runCount = document.getElementById("runCount");
 
@@ -27,23 +29,32 @@ warmupLength.addEventListener("change", function(){
   warmupLengthDisplay.innerHTML = warmupLength.value + " min"
 });
 
-// save and reset buttons
+// clearLogs, save and reset buttons
+const clearLogs = document.getElementById("clearLogs");
 const saveSettings = document.getElementById("saveSettings");
 const resetSettings = document.getElementById("resetSettings");
+
+clearLogs.addEventListener("click", function(){
+  if(confirm("Sollen wirklich alle Logs gelöscht werden?")){
+    clearObjectstore("history");
+  }
+});
 
 saveSettings.addEventListener("click", function(){
   if(isNaN(runLength.value)){
     alert("Fehler! Falsche Eingabe!")
     runLength.select();
   } else {
-    addSettings(gpsSetting.checked, runType.value, runCount.value, runLength.value, pauseLength.value, warmupLength.value);
+    addSettings(gpsSetting.checked, voiceSetting.checked, soundSetting.checked, runType.value, runCount.value, runLength.value, pauseLength.value, warmupLength.value);
   };
 });
 
 resetSettings.addEventListener("click", function(){
   if(confirm("Sollen die Einstellungen wirklich zurück gesetzt werden?")){
-    clearSettings();
+    clearObjectstore("settings");
     gpsSetting.checked = false;
+    voiceSetting.checked = true;
+    soundSetting.checked = true;
     runLength.value = 0;
     runCount.value = 1;
     pauseLength.value = 0;
@@ -71,8 +82,10 @@ runType.addEventListener("change", function(){
 });
 
 // loading gps setting
-const loadGpsSetting = (gps) => {
-  gpsSetting.checked = gps;
+const loadGeneralSetting = (general) => {
+  gpsSetting.checked = general.gps;
+  voiceSetting.checked = general.voice;
+  soundSetting.checked = general.sound;
   console.log(gpsSetting.checked);
 };
 

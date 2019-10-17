@@ -22,7 +22,9 @@
       <main>
         <h5 class="grey-text siteHead">Einstellungen</h5>
         <div class="settings container black-text text-darken-1">
-          <div class="row gpsSetting">
+          <h6 class="grey-text">Appeinstellungen</h6>
+          <!-- gps switch -->
+          <div class="row settingSwitch">
             <div class="col s6">
               <div class="switch">
                 <label>
@@ -35,7 +37,41 @@
             </div>
             <div class="col s6"><span class="right">GPS-Lokalisierung</span></div>
           </div>
+        <!-- Sound switch -->
+          <div class="row settingSwitch">
+            <div class="col s6">
+              <div class="switch">
+                <label>
+                  Aus
+                  <input id="voiceSetting" type="checkbox" checked>
+                  <span class="lever"></span>
+                  An
+                </label>
+              </div>
+            </div>
+            <div class="col s6"><span class="right">Sprachmeldungen</span></div>
+          </div>
+          <!-- Voice switch -->
+          <div class="row settingSwitch">
+            <div class="col s6">
+              <div class="switch">
+                <label>
+                  Aus
+                  <input id="soundSetting" type="checkbox" checked>
+                  <span class="lever"></span>
+                  An
+                </label>
+              </div>
+            </div>
+            <div class="col s6"><span class="right">Geräusche</span></div>
+          </div>
+          <!-- clear logs button -->
+          <div class="row clearBtn">
+            <a id="clearLogs" class="left waves-effect waves-light btn">Verlauf löschen</a>
+          </div>
+
           <div class="divider"></div>
+          <!-- Runsettings -->
           <h6 class="grey-text">Laufeinstellungen</h6>
           <div class="input-field col s10 center">
             <select id="runType">
@@ -119,12 +155,8 @@
         <div class="divider"></div>
         </div>
         <div class="row settingsBtns">
-          <div class="col s7">
-            <a id="saveSettings" class="left waves-effect waves-light btn">Speichern</a>
-          </div>
-          <div class="col s5">
-            <a id="resetSettings" class="right waves-effect waves-light btn">Reset</a>
-          </div>
+          <a id="saveSettings" class="left waves-effect waves-light btn">Speichern</a>
+          <a id="resetSettings" class="right waves-effect waves-light btn">Reset</a>
         </div>
       </main>
 
