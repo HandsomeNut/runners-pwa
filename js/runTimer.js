@@ -151,6 +151,7 @@ startRun = () => {
   if(gps){getPosition()};
   runTime = setInterval(timer, 1000);
   voiceAndSound(bing, go, 500);
+  wakelock.play();
 };
 
 // stops the timer
@@ -162,6 +163,7 @@ const stopRun = () => {
   clearInterval(runTime);
   makeDateString();
   addLog();
+  wakelock.stop();
 };
 
 // test for geolocation
@@ -342,7 +344,7 @@ const loadRunSetting = (runSetting) => {
     } else {
       pauseCount = runCount - 1;
     };
-    
+
     completeLength = (runLength * runCount) + (pauseLength * pauseCount) + (warmupLength * 2);
     console.log("runtime",completeLength , runLength, runCount, pauseLength, pauseCount, warmupLength)
   };
@@ -387,8 +389,27 @@ const end = new audio("/sound/end.mp3", true, false);
 const warm = new audio("/sound/warmup.mp3", true, false);
 const cool = new audio("/sound/cooldown.mp3", true, false);
 
+// wakelock workaround
+function video(src) {
+  this.video = document.createElement("video");
+  this.video.src = src;
+  this.video.setAttribute("preload", "auto");
+  this.video.setAttribute("controls", "none");
+  this.video.setAttribute("loop", "loop");
+  this.video.style.display = "none";
+  document.body.appendChild(this.video);
+  this.play = function(){
+      this.video.play();
+  }
+  this.stop = function(){
+    this.video.pause();
+  }
+};
+const wakelock = new video("/img/wakelock.mp4");
+
+
 // get settings
 document.addEventListener("DOMContentLoaded", function() {
   console.log("catching settings")
-  setTimeout(function() {getSettings()}, 175)
+  setTimeout(function() {getSettings()}, 375)
 });
