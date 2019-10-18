@@ -418,8 +418,8 @@ function video(src) {
 const wakelock = new video("/img/wakelock.webm");
 
 
-// get settings
-document.addEventListener("DOMContentLoaded", function() {
-  console.log("catching settings")
-  setTimeout(function() {getSettings()}, 375)
-});
+// // get settings
+// document.addEventListener("DOMContentLoaded", function() {
+//   console.log("catching settings")
+//   setTimeout(function() {getSettings()}, 375)
+// });

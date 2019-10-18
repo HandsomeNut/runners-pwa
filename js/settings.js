@@ -9,7 +9,7 @@ const warmupLength = document.getElementById("warmupLength");
 const gpsSetting = document.getElementById("gpsSetting");
 const voiceSetting = document.getElementById("voiceSetting");
 const soundSetting = document.getElementById("soundSetting");
-const visulizerSetting = document.getElementById("visualizerSetting");
+const visualizerSetting = document.getElementById("visualizerSetting");
 const progressSetting = document.getElementById("progressSetting");
 const runType = document.getElementById("runType");
 const runCount = document.getElementById("runCount");
@@ -122,8 +122,8 @@ const loadRunSetting = (runSettings) => {
 
 };
 
-// get settings
-document.addEventListener("DOMContentLoaded", function() {
-  console.log("catching settings")
-  setTimeout(function() {getSettings()}, 175)
-});
+// // get settings
+// document.addEventListener("DOMContentLoaded", function() {
+//   console.log("catching settings")
+//   setTimeout(function() {getSettings()}, 175)
+// });

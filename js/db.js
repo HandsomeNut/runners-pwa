@@ -27,6 +27,8 @@ function openDB() {
   request.onsuccess = evt => {
     db = evt.target.result;
     console.log(`${db.name} version ${db.version} is successfully called`);
+    console.log("catching settings")
+    getSettings()
   };
 
   // on error
@@ -192,7 +194,7 @@ const clearObjectstore = (objectStore) => {
     console.log("Was successfully cleared!")
     // reinitialize DB with Default
     if(objectStore === "settings"){
-      addSettings(false, true, true, 1, 1, 0, 0, 0);
+      addSettings(false, true, true, true, true, 1, 1, 0, 0, 0);
     }
   };
 };
