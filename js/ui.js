@@ -13,11 +13,16 @@ const speedAvgDisplay = document.getElementById("speedAvg");
 const startBtn = document.getElementById("startBtn");
 const tracker = document.querySelector(".tracker");
 const runProgress = document.getElementById("runProgress");
+var runVisual = document.getElementById("runVisual");
 var timerDisplay;
 var distanceDisplay;
 var speedDisplay;
 
-updateInfo = (time, distance) => {
+console.log(runVisual);
+
+
+
+const updateInfo = (time, distance) => {
   timerDisplay = document.getElementById("timer");
   distanceDisplay = document.getElementById("distance");
   speedDisplay = document.getElementById("speed");
@@ -25,6 +30,57 @@ updateInfo = (time, distance) => {
   timerDisplay.innerHTML = time;
   distanceDisplay.innerHTML = distance;
   speedDisplay.innerHTML = speed;
+};
+
+// a visualizer to show your runpartitioning
+
+const drawVisual = (completeLength, runLength, runCount, pauseLength, pauseCount, warmupLength) => {
+  runVisual.width = runVisual.clientWidth;
+  runVisual.style.width = "";
+  const width = runVisual.scrollWidth;
+  const part = width / completeLength;
+  const warmupPart = part * warmupLength;
+  const runPart = part * runLength;
+  const pausePart = part * pauseLength;
+
+  console.log(width, part, warmupPart, runPart, pausePart, runCount, pauseCount);
+  var pointer = 0;
+
+  var warmup = true;
+
+  const ctx = runVisual.getContext("2d");
+
+  while(pointer < width){
+
+    if(warmup){
+    ctx.fillStyle = "#d32f2f";
+    ctx.fillRect(pointer, 0, warmupPart, 30);
+
+    pointer += warmupPart;
+    console.log(pointer, warmupPart)
+    warmup = false;
+    }
+
+    if(runCount === 0){
+      ctx.fillStyle = "#d32f2f";
+      ctx.fillRect(pointer, 0, warmupPart, 30);
+
+      pointer += warmupPart;
+      break
+    }else if(runCount > pauseCount){
+      ctx.fillStyle = "#fbc02d";
+      ctx.fillRect(pointer, 0, runPart, 30);
+
+      pointer += runPart;
+      runCount--;
+    } else {
+      ctx.fillStyle = "#1976d2";
+      ctx.fillRect(pointer, 0, pausePart, 30);
+
+      pointer += pausePart;
+      pauseCount--;
+    };
+  }
 };
 
 // renderErrorLog = (distanceAdded, pos1, pos2, num) => {

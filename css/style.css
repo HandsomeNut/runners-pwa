@@ -72,6 +72,12 @@ a.app-logo {
 
 /* Timer page styles */
 
+canvas {
+  margin-top: 20px;
+  width: 100%;
+  border-radius: 20px;
+}
+
 .timer {
   margin-top: 5em;
   margin-bottom: 2em;
@@ -94,7 +100,7 @@ a.app-logo {
 }
 
 #runProgress {
-  margin-top: 50px;
+  margin-top: 20px;
 }
 
 #runProgress .determinate {

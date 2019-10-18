@@ -9,6 +9,8 @@ const warmupLength = document.getElementById("warmupLength");
 const gpsSetting = document.getElementById("gpsSetting");
 const voiceSetting = document.getElementById("voiceSetting");
 const soundSetting = document.getElementById("soundSetting");
+const visulizerSetting = document.getElementById("visualizerSetting");
+const progressSetting = document.getElementById("progressSetting");
 const runType = document.getElementById("runType");
 const runCount = document.getElementById("runCount");
 
@@ -45,7 +47,7 @@ saveSettings.addEventListener("click", function(){
     alert("Fehler! Falsche Eingabe!")
     runLength.select();
   } else {
-    addSettings(gpsSetting.checked, voiceSetting.checked, soundSetting.checked, runType.value, runCount.value, runLength.value, pauseLength.value, warmupLength.value);
+    addSettings(gpsSetting.checked, voiceSetting.checked, soundSetting.checked, visualizerSetting.checked, progressSetting.checked, runType.value, runCount.value, runLength.value, pauseLength.value, warmupLength.value);
   };
 });
 
@@ -55,6 +57,8 @@ resetSettings.addEventListener("click", function(){
     gpsSetting.checked = false;
     voiceSetting.checked = true;
     soundSetting.checked = true;
+    visualizerSetting.checked = true;
+    progressSetting.checked = true;
     runLength.value = 0;
     runCount.value = 1;
     pauseLength.value = 0;
@@ -86,6 +90,8 @@ const loadGeneralSetting = (general) => {
   gpsSetting.checked = general.gps;
   voiceSetting.checked = general.voice;
   soundSetting.checked = general.sound;
+  visualizerSetting.checked = general.visualizer;
+  progressSetting.checked = general.progress;
   console.log(gpsSetting.checked);
 };
 

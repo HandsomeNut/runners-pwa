@@ -67,12 +67,14 @@ function addLog() {
 
 };
 
-const addSettings = (gps, voice, sound, runType, runCount, runLength, pauseLength, warmupLength) => {
+const addSettings = (gps, voice, sound, visualizer, progress, runType, runCount, runLength, pauseLength, warmupLength) => {
   const generalSetting = {
     title: "general",
     gps: gps,
     voice: voice,
     sound: sound,
+    visualizer: visualizer,
+    progress: progress,
   };
 
   const runSetting = {
@@ -189,7 +191,7 @@ const clearObjectstore = (objectStore) => {
   request.onsuccess = function(evt) {
     console.log("Was successfully cleared!")
     // reinitialize DB with Default
-    if(objectStore = "settings"){
+    if(objectStore === "settings"){
       addSettings(false, true, true, 1, 1, 0, 0, 0);
     }
   };

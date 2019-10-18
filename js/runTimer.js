@@ -18,6 +18,8 @@ var intervalTime;
 var gps = false;
 var voice = true;
 var sound = true;
+var visualizer = true;
+var progress = true;
 var runType = 1;
 var runLength;
 var runCount;
@@ -124,7 +126,7 @@ const checkRuntime = (difference, now) => {
   let typeMatch = (runType === 3);
 
   //check if phase is done
-  if(difference === completeLength * 60){
+  if(difference === completeLength * 60){progress
     stopRun()
     voiceAndSound(bing, end, 500);
   } else if(runDone && run && !warmup && !cooldown) {
@@ -322,6 +324,8 @@ const loadGeneralSetting = (general) => {
   gps = general.gps;
   voice = general.voice;
   sound = general.sound;
+  visualizer = general.visualizer;
+  progress = general.progress;
 };
 
 const loadRunSetting = (runSetting) => {
@@ -352,7 +356,13 @@ const loadRunSetting = (runSetting) => {
   console.log("loading settings!!!")
   // show progressBar
   if(runType != 1){
-    runProgress.style.display = "block";
+    if(progress){
+      runProgress.style.display = "block";
+    }
+    if(visualizer){
+      runVisual.style.display = "block";
+      drawVisual(completeLength * 60, runLength * 60, runCount, pauseLength * 60, pauseCount, warmupLength * 60);
+    };
   };
 };
 
@@ -405,7 +415,7 @@ function video(src) {
     this.video.pause();
   }
 };
-const wakelock = new video("/img/wakelock.mp4");
+const wakelock = new video("/img/wakelock.webm");
 
 
 // get settings
