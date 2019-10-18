@@ -46,8 +46,8 @@ renderLog = (id, type, distance, time, date, month) => {
   runs.innerHTML += log;
 };
 
-// get and render logs
-document.addEventListener("DOMContentLoaded", function() {
-  console.log("catching logs")
-  setTimeout(function() {getLogs()}, 175)
-});
+// // get and render logs
+// document.addEventListener("DOMContentLoaded", function() {
+//   console.log("catching logs")
+//   setTimeout(function() {getLogs()}, 175)
+// });

@@ -48,7 +48,7 @@ saveSettings.addEventListener("click", function(){
     runLength.select();
   } else {
     addSettings(gpsSetting.checked, voiceSetting.checked, soundSetting.checked, visualizerSetting.checked, progressSetting.checked, runType.value, runCount.value, runLength.value, pauseLength.value, warmupLength.value);
-  };
+  }
 });
 
 resetSettings.addEventListener("click", function(){
@@ -80,7 +80,7 @@ runType.addEventListener("change", function(){
   } else  if(runType.value === "3"){
     console.log(runType.value)
     runType3();
-  };
+  }
   const selects = document.querySelectorAll('select');
   M.FormSelect.init(selects);
 });
@@ -108,7 +108,7 @@ const loadRunSetting = (runSettings) => {
   } else {
     console.log("I nehm die Numma 3")
     runType3();
-  };
+  }
 
   // getting slider and dropdown data
   runCount.value = runSettings.runCount;
@@ -121,9 +121,3 @@ const loadRunSetting = (runSettings) => {
   setSliderDisplay();
 
 };
-
-// // get settings
-// document.addEventListener("DOMContentLoaded", function() {
-//   console.log("catching settings")
-//   setTimeout(function() {getSettings()}, 175)
-// });

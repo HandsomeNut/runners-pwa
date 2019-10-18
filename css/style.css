@@ -222,3 +222,20 @@ input[type="checkbox"]:checked + .lever {
 #runSettings, #pauseSettings, #warmupSettings {
   color: grey;
 }
+
+/* media query if screen too little height */
+@media only screen and (max-height: 640px) {
+
+  .timer {
+    margin-top: 2em;
+    margin-bottom: 1em;
+  }
+
+  .distance {
+    margin-top: 1em;
+  }
+
+  .tracking {
+    margin-top: 1em;
+  }
+}

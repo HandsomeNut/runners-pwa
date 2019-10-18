@@ -4,7 +4,6 @@ var running = false;
 var todayDate;
 var dateString;
 var startTime = 0;
-var i = 0;
 var runTime;
 var distance = 0;
 var distanceAdded = 0;
@@ -29,7 +28,7 @@ var warmupLength;
 var completeLength;
 
 //  timer counting up
-timer = () => {
+const timer = () => {
 
   var now = new Date().getTime();
 
@@ -42,17 +41,17 @@ timer = () => {
 
   if(hours < 10){
     hours = "0" + hours;
-  };
+  }
 
   if(minutes < 10){
     minutes = "0" + minutes;
-  };
+  }
 
   if(seconds < 10){
     seconds = "0" + seconds;
-  };
+  }
 
-  time = hours + ":" + minutes + ":" + seconds;
+  let time = hours + ":" + minutes + ":" + seconds;
 
   difference = Math.round(difference / 1000)
   // update additional timer infos
@@ -66,14 +65,14 @@ timer = () => {
     // getCalories()
 
     // renderErrorLog(distanceAdded, startPos, currentPos, difference/5);
-  };
+  }
 
   updateInfo(time, Math.round(distance * 100) / 100, speed);
 
   // check for runtimes
-  if(runType != 1 && db != null){
+  if(runType != 1){
     checkRuntime(difference, now);
-  };
+  }
 
 };
 
@@ -102,7 +101,7 @@ const checkRuntime = (difference, now) => {
       interval = 0;
       intervalTime = now;
       voiceAndSound(bing, runSound, 500);
-    };
+    }
   } else if(cooldown) {
     pauseSound.sound.onended = function(){cool.play()}
     console.log("cooldown")
@@ -113,13 +112,13 @@ const checkRuntime = (difference, now) => {
   } else {
     console.log("pause")
     runProgress.childNodes[1].style.backgroundColor = "var(--secondary)";
-  };
+  }
 
   // sound when close to the end
   let lastPart = (interval === (runLength * 60) * 0.8);
   if(runCount === 1 && run && lastPart && !warmup && !cooldown){
     voiceAndSound(miep, almostDone, 1000);
-  };
+  }
 
   let runDone = (interval === runLength * 60);
   let pauseDone = (interval === pauseLength * 60);
@@ -137,7 +136,7 @@ const checkRuntime = (difference, now) => {
     intervalTime = now;
     pauseCount--;
     voiceAndSound(bing, runSound, 500);
-  };
+  }
 
 }
 
@@ -150,7 +149,7 @@ startRun = () => {
   startTime = todayDate.getTime();
   // settingIntervalTime
   intervalTime = startTime;
-  if(gps){getPosition()};
+  if(gps){getPosition()}
   runTime = setInterval(timer, 1000);
   voiceAndSound(bing, go, 500);
   wakelock.play();
@@ -173,7 +172,7 @@ if (navigator.geolocation) {
   console.log('Geolocation is supported!');
 } else {
   alert('Geolocation is not supported for this Browser/OS.');
-};
+}
 
 // get current geolocation
 getPosition = () => {
@@ -279,24 +278,24 @@ const makeDateString = () => {
 
   weekdays = ["So.", "Mo.", "Di.", "Mi.", "Do.", "Fr.", "Sa."];
 
-  month = todayDate.getMonth() + 1;
-  day = todayDate.getDate();
-  year = todayDate.getFullYear();
-  hour = todayDate.getHours();
-  minute = todayDate.getMinutes();
-  weekday = todayDate.getDay();
+  let month = todayDate.getMonth() + 1;
+  let day = todayDate.getDate();
+  let year = todayDate.getFullYear();
+  let hour = todayDate.getHours();
+  let minute = todayDate.getMinutes();
+  let weekday = todayDate.getDay();
 
   if(minute < 10){
     minute = "0" + minute;
-  };
+  }
 
   if(hour < 10){
     hour = "0" + hour;
-  };
+  }
 
   if(day < 10){
     day = "0" + day;
-  };
+  }
 
   if(month < 10){
     month = "0" + month;
@@ -347,11 +346,11 @@ const loadRunSetting = (runSetting) => {
       pauseCount = 0;
     } else {
       pauseCount = runCount - 1;
-    };
+    }
 
     completeLength = (runLength * runCount) + (pauseLength * pauseCount) + (warmupLength * 2);
     console.log("runtime",completeLength , runLength, runCount, pauseLength, pauseCount, warmupLength)
-  };
+  }
 
   console.log("loading settings!!!")
   // show progressBar
@@ -362,8 +361,8 @@ const loadRunSetting = (runSetting) => {
     if(visualizer){
       runVisual.style.display = "block";
       drawVisual(completeLength * 60, runLength * 60, runCount, pauseLength * 60, pauseCount, warmupLength * 60);
-    };
-  };
+    }
+  }
 };
 
 // load Sound
@@ -414,12 +413,5 @@ function video(src) {
   this.stop = function(){
     this.video.pause();
   }
-};
+}
 const wakelock = new video("/img/wakelock.webm");
-
-
-// // get settings
-// document.addEventListener("DOMContentLoaded", function() {
-//   console.log("catching settings")
-//   setTimeout(function() {getSettings()}, 375)
-// });

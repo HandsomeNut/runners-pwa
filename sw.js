@@ -1,6 +1,6 @@
 
-const staticCacheName = "site-static-v15"
-const dynamicCacheName = "site-dynamic-v12"
+const staticCacheName = "site-static-v1";
+const dynamicCacheName = "site-dynamic-v1";
 const assets = [
   "/",
   "/index.html",
@@ -14,7 +14,7 @@ const assets = [
   "/img/cloudy.png",
   "/img/sunny.png",
   "/img/sunny_s_cloudy.png",
-  "/img/wakelock.mp4",
+  "/img/wakelock.webm",
   "/sound/go.mp3",
   "/sound/bing.mp3",
   "/sound/miep.mp3",
@@ -26,7 +26,7 @@ const assets = [
   "/sound/almostDone.mp3",
   'https://fonts.googleapis.com/icon?family=Material+Icons',
   'https://fonts.gstatic.com/s/materialicons/v48/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2'
-]
+];
 
 // cache size limiter
 const limitCacheSize = (name, size) => {
@@ -43,7 +43,7 @@ const limitCacheSize = (name, size) => {
 
 // install event
 self.addEventListener("install", evt =>{
-  console.log("service worker installed");
+  // console.log("service worker installed");
   evt.waitUntil(
     caches.open(staticCacheName).then(cache => {
       console.log("caching shell assets");
@@ -54,7 +54,7 @@ self.addEventListener("install", evt =>{
 
 // activate event
 self.addEventListener("activate", evt =>{
-  console.log("service worker activated");
+  // console.log("service worker activated");
   evt.waitUntil(
     caches.keys().then(keys => {
       return Promise.all(keys
@@ -66,14 +66,14 @@ self.addEventListener("activate", evt =>{
 });
 
 self.addEventListener("fetch", evt => {
-  console.log("fetching some stuff");
+  // console.log("fetching some stuff");
   evt.respondWith(
     caches.match(evt.request).then(cacheRes => {
       return cacheRes || fetch(evt.request).then(fetchRes => {
         return caches.open(dynamicCacheName).then(cache =>{
-          console.log("caching dynamically");
+          // console.log("caching dynamically");
           cache.put(evt.request.url, fetchRes.clone());
-          // limitCacheSize(dynamicCacheName, 15);
+          limitCacheSize(dynamicCacheName, 20);
           return fetchRes;
         })
 

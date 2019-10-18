@@ -26,9 +26,14 @@ function openDB() {
   // on Success
   request.onsuccess = evt => {
     db = evt.target.result;
+    console.log(window.location.pathname);
     console.log(`${db.name} version ${db.version} is successfully called`);
-    console.log("catching settings")
-    getSettings()
+    if(!(window.location.pathname === "/pages/history.html")){
+      getSettings()
+    } else {
+      getLogs()
+    }
+
   };
 
   // on error
@@ -36,7 +41,7 @@ function openDB() {
     console.log(`Error detected! ${err}`);
   };
 
-};
+}
 
 
 // add new database objectstores
@@ -67,7 +72,7 @@ function addLog() {
 
   newLog.add(log);
 
-};
+}
 
 const addSettings = (gps, voice, sound, visualizer, progress, runType, runCount, runLength, pauseLength, warmupLength) => {
   const generalSetting = {
@@ -190,7 +195,7 @@ const clearObjectstore = (objectStore) => {
 
   const request = settingsDB.clear();
 
-  request.onsuccess = function(evt) {
+  request.onsuccess = function() {
     console.log("Was successfully cleared!")
     // reinitialize DB with Default
     if(objectStore === "settings"){

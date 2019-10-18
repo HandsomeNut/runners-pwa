@@ -79,7 +79,7 @@ const drawVisual = (completeLength, runLength, runCount, pauseLength, pauseCount
 
       pointer += pausePart;
       pauseCount--;
-    };
+    }
   }
 };
 
