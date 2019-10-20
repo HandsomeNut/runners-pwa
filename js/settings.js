@@ -1,4 +1,13 @@
+// app settings
+const gpsSetting = document.getElementById("gpsSetting");
+const voiceSetting = document.getElementById("voiceSetting");
+const soundSetting = document.getElementById("soundSetting");
+const visualizerSetting = document.getElementById("visualizerSetting");
+const progressSetting = document.getElementById("progressSetting");
 
+// run settings
+const runType = document.getElementById("runType");
+const runCount = document.getElementById("runCount");
 const runLengthDisplay = document.getElementById("runLengthDisplay");
 const runLength = document.getElementById("runLength");
 const pauseLengthDisplay = document.getElementById("pauseLengthDisplay");
@@ -6,13 +15,9 @@ const pauseLength = document.getElementById("pauseLength");
 const warmupLengthDisplay = document.getElementById("warmupLengthDisplay");
 const warmupLength = document.getElementById("warmupLength");
 
-const gpsSetting = document.getElementById("gpsSetting");
-const voiceSetting = document.getElementById("voiceSetting");
-const soundSetting = document.getElementById("soundSetting");
-const visualizerSetting = document.getElementById("visualizerSetting");
-const progressSetting = document.getElementById("progressSetting");
-const runType = document.getElementById("runType");
-const runCount = document.getElementById("runCount");
+// personal settings
+const runnerName = document.getElementById("runnerName");
+const runnerWeight = document.getElementById("runnerWeight");
 
 // setting slider numbers to actual position
 const setSliderDisplay = () => {
@@ -47,7 +52,7 @@ saveSettings.addEventListener("click", function(){
     alert("Fehler! Falsche Eingabe!")
     runLength.select();
   } else {
-    addSettings(gpsSetting.checked, voiceSetting.checked, soundSetting.checked, visualizerSetting.checked, progressSetting.checked, runType.value, runCount.value, runLength.value, pauseLength.value, warmupLength.value);
+    addSettings(gpsSetting.checked, voiceSetting.checked, soundSetting.checked, visualizerSetting.checked, progressSetting.checked, runType.value, runCount.value, runLength.value, pauseLength.value, warmupLength.value, runnerName.value, runnerWeight.value);
   }
 });
 
@@ -63,6 +68,8 @@ resetSettings.addEventListener("click", function(){
     runCount.value = 1;
     pauseLength.value = 0;
     warmupLength.value = 0;
+    runnerName.value = "";
+    runnerWeight.value = 0;
     runType1();
     window.location.reload();
   }
@@ -121,3 +128,9 @@ const loadRunSetting = (runSettings) => {
   setSliderDisplay();
 
 };
+
+// loading personalInfo
+const loadPersonalInfo = (info) => {
+  runnerName.value = info.name;
+  runnerWeight.value = info.weight;
+}

@@ -9,28 +9,27 @@ document.addEventListener("DOMContentLoaded", function() {
 
 // elements for ui runTimer manipulation
 const caloriesDisplay = document.getElementById("calories");
-const speedAvgDisplay = document.getElementById("speedAvg");
+const paceDisplay = document.getElementById("pace");
 const startBtn = document.getElementById("startBtn");
 const tracker = document.querySelector(".tracker");
 const runProgress = document.getElementById("runProgress");
+const timerDisplay = document.getElementById("timer");
+const distanceDisplay = document.getElementById("distance");
+const speedDisplay = document.getElementById("speed");
 var runVisual = document.getElementById("runVisual");
-var timerDisplay;
-var distanceDisplay;
-var speedDisplay;
-
-console.log(runVisual);
 
 
 
-const updateInfo = (time, distance) => {
-  timerDisplay = document.getElementById("timer");
-  distanceDisplay = document.getElementById("distance");
-  speedDisplay = document.getElementById("speed");
-
+const updateTimer = (time, distance, speed,calories, pace) => {
   timerDisplay.innerHTML = time;
-  distanceDisplay.innerHTML = distance;
-  speedDisplay.innerHTML = speed;
 };
+
+const updateInfo = (distance, speed, calories, pace) => {
+    distanceDisplay.innerHTML = distance;
+    speedDisplay.innerHTML = speed;
+    calories.innerHTML = calories;
+    paceDisplay.innerHTML = pace;
+}
 
 // a visualizer to show your runpartitioning
 

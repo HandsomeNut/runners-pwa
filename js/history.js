@@ -5,7 +5,8 @@ const monthNames = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli"
 const weatherPic = ["sunny_s_cloudy.png", "sunny.png", "cloudy.png"]
 const runTypes = ["Unbegrenzt", "Begrenzt", "Interval"]
 
-renderLog = (id, type, distance, time, date, month) => {
+// creates logs from DB on page load
+const renderLog = (id, type, distance, time, date, month) => {
 
   let weather = weatherPic[Math.floor(Math.random()*weatherPic.length)];
   let runType = runTypes[type - 1];

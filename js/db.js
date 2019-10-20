@@ -45,7 +45,7 @@ function openDB() {
 
 
 // add new database objectstores
-function addLog() {
+const addLog = (runType, dateID, dateString, startTime) => {
 
   const log = {
     dateID: dateID,
@@ -53,7 +53,7 @@ function addLog() {
     distance: distanceDisplay.textContent,
     time: timerDisplay.textContent,
     date: dateString,
-    month: todayDate.getMonth()
+    month: startTime.getMonth()
   };
 
   const transaction = db.transaction("history", "readwrite");
@@ -74,7 +74,7 @@ function addLog() {
 
 }
 
-const addSettings = (gps, voice, sound, visualizer, progress, runType, runCount, runLength, pauseLength, warmupLength) => {
+const addSettings = (gps, voice, sound, visualizer, progress, runType, runCount, runLength, pauseLength, warmupLength, name, weight) => {
   const generalSetting = {
     title: "general",
     gps: gps,
@@ -93,6 +93,12 @@ const addSettings = (gps, voice, sound, visualizer, progress, runType, runCount,
     warmupLength: parseInt(warmupLength),
   };
 
+  const personalInfo = {
+    title: "personalInfo",
+    name: name,
+    weight: parseInt(weight)
+  }
+
   const transaction = db.transaction("settings", "readwrite");
 
   transaction.oncomplete = function(evt) {
@@ -107,6 +113,8 @@ const addSettings = (gps, voice, sound, visualizer, progress, runType, runCount,
 
   updateSettings.put(generalSetting);
   updateSettings.put(runSetting);
+  updateSettings.put(personalInfo);
+
 
 }
 
@@ -170,8 +178,10 @@ const getSettings = () => {
 
       if(cursor.key === "general") {
         loadGeneralSetting(cursor.value);
-      } else {
+      } else if(cursor.key === "run"){
         loadRunSetting(cursor.value);
+      } else if(cursor.key === "personalInfo") {
+        loadPersonalInfo(cursor.value);
       }
       // do sth with the cursor
       cursor.continue()
@@ -199,7 +209,7 @@ const clearObjectstore = (objectStore) => {
     console.log("Was successfully cleared!")
     // reinitialize DB with Default
     if(objectStore === "settings"){
-      addSettings(false, true, true, true, true, 1, 1, 0, 0, 0);
+      addSettings(false, true, true, true, true, 1, 1, 0, 0, 0, "", 0);
     }
   };
 };

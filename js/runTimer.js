@@ -1,13 +1,9 @@
 
 // declare important variables
-var running = false;
-var todayDate;
-var dateString;
-var startTime = 0;
-var runTime;
+
+var runTimer;
+var startTime;
 var distance = 0;
-var distanceAdded = 0;
-var speed = 0;
 var startPos;
 var startPosSet = false;
 var currentPos;
@@ -26,17 +22,23 @@ var pauseLength;
 var pauseCount;
 var warmupLength;
 var completeLength;
+var weight;
 
 //  timer counting up
 const timer = () => {
 
-  var now = new Date().getTime();
+  let distanceAdded = 0;
+  let speed = 0;
+  let calories = 0;
+  let pace = 0;
 
-  var difference = now - startTime;
+  let now = new Date().getTime();
 
-  var hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  var minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-  var seconds = Math.floor((difference % (1000 * 60)) / 1000);
+  let difference = now - startTime.getTime();;
+
+  let hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  let minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+  let seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
 
   if(hours < 10){
@@ -55,19 +57,21 @@ const timer = () => {
 
   difference = Math.round(difference / 1000)
   // update additional timer infos
-  if(difference%3 === 0 && gps){
+  if(difference%5 === 0 && gps){
     getPosition();
   }
-  if(difference%5 === 0 && gps){
+  if(difference%10 === 0 && gps){
     distanceAdded = getDistance();
     distance += distanceAdded;
     speed = getSpeed(distance, difference);
-    // getCalories()
+    calories = getCalories(speed, difference);
+    pace = getPace(distance, difference);
 
+    updateInfo(Math.round(distance * 100) / 100, speed, calories, pace);
     // renderErrorLog(distanceAdded, startPos, currentPos, difference/5);
   }
 
-  updateInfo(time, Math.round(distance * 100) / 100, speed);
+  updateTimer(time);
 
   // check for runtimes
   if(runType != 1){
@@ -75,6 +79,118 @@ const timer = () => {
   }
 
 };
+
+// test for geolocation
+if (navigator.geolocation) {
+  console.log('Geolocation is supported!');
+} else {
+  alert('Geolocation is not supported for this Browser/OS.');
+}
+
+// get current geolocation
+getPosition = () => {
+  var currentPos;
+  var geoOptions = {
+     timeout: 10 * 1000,
+     enableHighAccuracy: true
+  }
+
+  var geoSuccess = function(position) {
+    if(startPosSet){
+      setCurrentPos(position);
+      console.log("curPos gesetzt")
+    } else {setStartPos(position); console.log("Start Pos gesetzt", startPos);}
+  };
+  var geoError = function(error) {
+    console.log('Error occurred. Error code: ' + error.code);
+    // error.code can be:
+    //   0: unknown error
+    //   1: permission denied
+    //   2: position unavailable (error response from location provider)
+    //   3: timed out
+  };
+
+  navigator.geolocation.getCurrentPosition(geoSuccess, geoError, geoOptions);
+
+};
+
+
+// calculate Distance between two points
+const getDistance = () => {
+
+  var lat2 = currentPos.coords.latitude;
+  var lon2 = currentPos.coords.longitude;
+  var lat1 = startPos.coords.latitude;
+  var lon1 = startPos.coords.longitude;
+
+  var R = 6371; // Radius of the earth in km
+  var dLat = (lat2-lat1).toRad();  // Javascript functions in radians
+  var dLon = (lon2-lon1).toRad();
+  var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+          Math.cos(lat1.toRad()) * Math.cos(lat2.toRad()) *
+          Math.sin(dLon/2) * Math.sin(dLon/2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  var distance = R * c; // Distance in km
+  console.log(!setStartPos);
+  if(!setStartPos){
+    startPos = currentPos;// disable tracker and distance while gps off
+  if(!gps){
+    distanceDisplay.innerHTML = "--";
+    speedDisplay.innerHTML = "--";
+    paceDisplay.innerHTML = "--";
+    caloriesDisplay.innerHTML = "--"
+  }
+    startPosSet = true;
+  }
+
+
+  return distance;
+};
+
+/** Converts numeric degrees to radians */
+if (typeof(Number.prototype.toRad) === "undefined") {
+  Number.prototype.toRad = function() {
+    return this * Math.PI / 180;
+  }
+}
+
+const setStartPos = (position) => {
+  startPos = position;
+  startPosSet = true;
+};
+
+const setCurrentPos = (position) => {
+  currentPos = position;
+  startPosSet = false;
+};
+
+//  calculate speed at the moment
+const getSpeed = (distance, difference) => {
+  let currentSpeed;
+  currentSpeed = (distance / difference)*3600
+
+  return Math.round(currentSpeed*100)/100
+}
+
+// calculate calories burned
+const getCalories = (speed, difference) => {
+  let currentCalories;
+  currentCalories = (difference * 3600) * ((0.2*speed)* 3.5 * weight) / 200
+
+  return Math.round(currentCalories);
+}
+
+// calculate pace
+const getPace = (distance, difference) => {
+  let currentPace;
+  currentPace = (difference * 3600) / distance
+
+  if(currentPace === Infinity){
+    currentPace = 0;
+  }
+
+  return Math.round(currentPace * 100)/100;
+}
 
 // Runtime function to account for different modes
 const checkRuntime = (difference, now) => {
@@ -114,11 +230,18 @@ const checkRuntime = (difference, now) => {
     runProgress.childNodes[1].style.backgroundColor = "var(--secondary)";
   }
 
-  // sound when close to the end
-  let lastPart = (interval === (runLength * 60) * 0.8);
-  if(runCount === 1 && run && lastPart && !warmup && !cooldown){
-    voiceAndSound(miep, almostDone, 1000);
+  // when at halfway point
+  if(difference === (completeLength*60)/2){
+    halfway.play();
   }
+
+  // sound when close to the end
+  let lastPart = (interval === (runLength * 60) * 0.6);
+  if(runCount === 1 && run && lastPart && !warmup && !cooldown){
+    almostDone.play();
+  }
+
+
 
   let runDone = (interval === runLength * 60);
   let pauseDone = (interval === pauseLength * 60);
@@ -142,15 +265,13 @@ const checkRuntime = (difference, now) => {
 
 // Starts the timer
 startRun = () => {
-  startBtn.innerHTML = "pause";
-  running = true;
+  startBtn.innerHTML = "stop";
   // get Date of today and precise Starttime
-  todayDate = new Date();
-  startTime = todayDate.getTime();
+  startTime = new Date()
   // settingIntervalTime
-  intervalTime = startTime;
+  intervalTime = startTime.getTime();;
   if(gps){getPosition()}
-  runTime = setInterval(timer, 1000);
+  runTimer = setInterval(timer, 1000);
   voiceAndSound(bing, go, 500);
   wakelock.play();
 };
@@ -159,122 +280,17 @@ startRun = () => {
 const stopRun = () => {
   startBtn.innerHTML = "play_arrow";
   startPosSet = false;
-  running = false;
   // stop timer and add run to logs
-  clearInterval(runTime);
-  makeDateString();
-  addLog();
+  clearInterval(runTimer);
+  // get date of today an timeID
+  dateIDstring = makeDateString(startTime);
+  // add data as new log
+  addLog(runType, dateIDstring[0], dateIDstring[1], startTime);
   wakelock.stop();
 };
 
-// test for geolocation
-if (navigator.geolocation) {
-  console.log('Geolocation is supported!');
-} else {
-  alert('Geolocation is not supported for this Browser/OS.');
-}
-
-// get current geolocation
-getPosition = () => {
-  var currentPos;
-  var geoOptions = {
-     timeout: 10 * 1000,
-     enableHighAccuracy: true
-  }
-
-  var geoSuccess = function(position) {
-    if(startPosSet){
-      setCurrentPos(position);
-      console.log("curPos gesetzt")
-    } else {setStartPos(position); console.log("Start Pos gesetzt", startPos);}
-  };
-  var geoError = function(error) {
-    console.log('Error occurred. Error code: ' + error.code);
-    // error.code can be:
-    //   0: unknown error
-    //   1: permission denied
-    //   2: position unavailable (error response from location provider)
-    //   3: timed out
-  };
-
-  navigator.geolocation.getCurrentPosition(geoSuccess, geoError, geoOptions);
-
-};
-
-const getDistance = () => {
-
-  var lat2 = currentPos.coords.latitude;
-  var lon2 = currentPos.coords.longitude;
-  var lat1 = startPos.coords.latitude;
-  var lon1 = startPos.coords.longitude;
-
-  var R = 6371; // Radius of the earth in km
-  var dLat = (lat2-lat1).toRad();  // Javascript functions in radians
-  var dLon = (lon2-lon1).toRad();
-  var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-          Math.cos(lat1.toRad()) * Math.cos(lat2.toRad()) *
-          Math.sin(dLon/2) * Math.sin(dLon/2);
-  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-  var distance = R * c; // Distance in km
-  console.log(!setStartPos);
-  if(!setStartPos){
-    startPos = currentPos;
-    startPosSet = true;
-  }
-
-
-  return distance;
-};
-
-/** Converts numeric degrees to radians */
-if (typeof(Number.prototype.toRad) === "undefined") {
-  Number.prototype.toRad = function() {
-    return this * Math.PI / 180;
-  }
-}
-
-const setStartPos = (position) => {
-  startPos = position;
-  startPosSet = true;
-};
-
-const renderErrorLog = (distanceAdded, pos1, pos2, num) => {
-
-  const timeStamp = new Date()
-
-  const html = `
-  <div class="log card-panel">
-    <h6>Log: ${num}</h6>
-    <p>${timeStamp}</p>
-    <p>${distanceAdded}km</p>
-    <p>${pos1.coords.latitude} | ${pos1.coords.longitude}</p>
-    <p>${pos2.coords.latitude} | ${pos2.coords.longitude}</p>
-  </div>
-  <br>
-  <br>
-  <br>
-  <br>makeDateString();
-    addLog();
-  <br>
-  `
-
-  tracker.innerHTML += html;
-};
-
-const setCurrentPos = (position) => {
-  currentPos = position;
-  startPosSet = false;
-};
-
-const getSpeed = (distance, difference) => {
-  let currentSpeed;
-  currentSpeed = (distance / difference)*3600
-
-  return Math.round(currentSpeed*100)/100
-}
-
-// makes a date string out of the date object
-const makeDateString = () => {
+// makes a date string out of the date objectrunning
+const makeDateString = (todayDate) => {
 
   weekdays = ["So.", "Mo.", "Di.", "Mi.", "Do.", "Fr.", "Sa."];
 
@@ -283,7 +299,12 @@ const makeDateString = () => {
   let year = todayDate.getFullYear();
   let hour = todayDate.getHours();
   let minute = todayDate.getMinutes();
+  let second = todayDate.getSeconds();
   let weekday = todayDate.getDay();
+
+  if(second < 10){
+    second = "0" + second;
+  }
 
   if(minute < 10){
     minute = "0" + minute;
@@ -296,28 +317,97 @@ const makeDateString = () => {
   if(day < 10){
     day = "0" + day;
   }
-
+// disable tracker and distance while gps off
+  if(!gps){
+    distanceDisplay.innerHTML = "--";
+    speedDisplay.innerHTML = "--";
+    paceDisplay.innerHTML = "--";
+    caloriesDisplay.innerHTML = "--"
+  }
   if(month < 10){
     month = "0" + month;
   }
 
   dateString = weekdays[weekday] + ", " + day + "." + month + "." + year.toString().substr(-2);
-  dateID = parseInt(`${year}${month}${day}${hour}${minute}`);
+  dateID = parseInt(`${year}${month}${day}${hour}${minute}${second}`);
   console.log(dateID, dateString);
 
-}
+  return [dateID, dateString];
 
-// on click of the play button
+};
+
+// start and stopbutton
 startBtn.addEventListener("click", evt =>{
-  if(running){
-    stopRun();
-
-  } else {
+  if(startBtn.innerHTML === "play_arrow"){
     startRun();
+  } else {
+    stopRun();
   }
 });
 
+// load sound
+function audio(src, voiceSample, soundSample) {
+  this.sound = document.createElement("audio");
+  this.sound.src = src;
+  this.sound.setAttribute("preload", "auto");
+  this.sound.setAttribute("controls", "none");
+  this.sound.style.display = "none";
+  document.body.appendChild(this.sound);
+  this.play = function(){
+    if((sound&&soundSample) || (voice&&voiceSample)){
+      this.sound.play();
+    }
+  }
+  this.stop = function(){
+    this.sound.pause();
+  }
+}
+
+const voiceAndSound = (sound, voice, wait) => {
+  sound.play();
+  setTimeout(function(){voice.play()},wait);
+}
+
+const bing = new audio("/sound/bing.mp3", false, true);
+const miep = new audio("/sound/miep.mp3", false, true);
+const go = new audio("/sound/go.mp3", true, false);
+const runSound = new audio("/sound/run.mp3", true, false);
+const pauseSound = new audio("/sound/pause.mp3", true, false);
+const halfway = new audio("/sound/halfway.mp3", true, false);
+const almostDone = new audio("/sound/almostDone.mp3", true, false);
+const end = new audio("/sound/end.mp3", true, false);
+const warm = new audio("/sound/warmup.mp3", true, false);
+const cool = new audio("/sound/cooldown.mp3", true, false);
+
+// wakelock workaround
+function video(src) {
+  this.video = document.createElement("video");
+  this.video.src = src;
+  this.video.setAttribute("preload", "auto");
+  this.video.setAttribute("controls", "none");
+  this.video.setAttribute("loop", "loop");
+  this.video.style.display = "none";
+  document.body.appendChild(this.video);
+  this.play = function(){
+      this.video.play();
+  }
+  this.stop = function(){
+    this.video.pause();
+  }
+}
+const wakelock = new video("/img/wakelock.webm");
+
+
 // load settings
+const checkForGPS = (gps) => {
+  // disable tracker and distance while gps off
+  if(!gps){
+    distanceDisplay.innerHTML = "--";
+    speedDisplay.innerHTML = "--";
+    paceDisplay.innerHTML = "--";
+    caloriesDisplay.innerHTML = "--"
+  }
+};
 
 const loadGeneralSetting = (general) => {
   gps = general.gps;
@@ -325,6 +415,8 @@ const loadGeneralSetting = (general) => {
   sound = general.sound;
   visualizer = general.visualizer;
   progress = general.progress;
+
+  checkForGPS(gps);
 };
 
 const loadRunSetting = (runSetting) => {
@@ -365,53 +457,34 @@ const loadRunSetting = (runSetting) => {
   }
 };
 
-// load Sound
-function audio(src, voiceSample, soundSample) {
-  this.sound = document.createElement("audio");
-  this.sound.src = src;
-  this.sound.setAttribute("preload", "auto");
-  this.sound.setAttribute("controls", "none");
-  this.sound.style.display = "none";
-  document.body.appendChild(this.sound);
-  this.play = function(){
-    if((sound&&soundSample) || (voice&&voiceSample)){
-      this.sound.play();
-    }
-  }
-  this.stop = function(){
-    this.sound.pause();
+// loading personalInfo
+const loadPersonalInfo = (info) => {
+  weight = info.weight;
+  console.log(weight);
+  if(gps && weight === 0){
+    alert("Um die Pace zu errechnen, gib bitte ein Gewicht in den Einstellungen an.")
   }
 }
 
-const voiceAndSound = (sound, voice, wait) => {
-  sound.play();
-  setTimeout(function(){voice.play()},wait);
-}
-
-const bing = new audio("/sound/bing.mp3", false, true);
-const miep = new audio("/sound/miep.mp3", false, true);
-const go = new audio("/sound/go.mp3", true, false);
-const runSound = new audio("/sound/run.mp3", true, false);
-const pauseSound = new audio("/sound/pause.mp3", true, false);
-const almostDone = new audio("/sound/almostDone.mp3", true, false);
-const end = new audio("/sound/end.mp3", true, false);
-const warm = new audio("/sound/warmup.mp3", true, false);
-const cool = new audio("/sound/cooldown.mp3", true, false);
-
-// wakelock workaround
-function video(src) {
-  this.video = document.createElement("video");
-  this.video.src = src;
-  this.video.setAttribute("preload", "auto");
-  this.video.setAttribute("controls", "none");
-  this.video.setAttribute("loop", "loop");
-  this.video.style.display = "none";
-  document.body.appendChild(this.video);
-  this.play = function(){
-      this.video.play();
-  }
-  this.stop = function(){
-    this.video.pause();
-  }
-}
-const wakelock = new video("/img/wakelock.webm");
+// const renderErrorLog = (distanceAdded, pos1, pos2, num) => {
+//
+//   const timeStamp = new Date()
+//
+//   const html = `
+//   <div class="log card-panel">
+//     <h6>Log: ${num}</h6>
+//     <p>${timeStamp}</p>
+//     <p>${distanceAdded}km</p>
+//     <p>${pos1.coords.latitude} | ${pos1.coords.longitude}</p>
+//     <p>${pos2.coords.latitude} | ${pos2.coords.longitude}</p>
+//   </div>
+//   <br>
+//   <br>
+//   <br>
+//   <br>makeDateString();
+//     addLog();
+//   <br>
+//   `
+//
+//   tracker.innerHTML += html;
+// };
