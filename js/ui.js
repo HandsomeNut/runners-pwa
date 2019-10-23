@@ -27,7 +27,7 @@ const updateTimer = (time, distance, speed,calories, pace) => {
 const updateInfo = (distance, speed, calories, pace) => {
     distanceDisplay.innerHTML = distance;
     speedDisplay.innerHTML = speed;
-    calories.innerHTML = calories;
+    caloriesDisplay.innerHTML = calories;
     paceDisplay.innerHTML = pace;
 }
 

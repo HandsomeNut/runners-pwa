@@ -183,7 +183,7 @@ const getCalories = (speed, difference) => {
 // calculate pace
 const getPace = (distance, difference) => {
   let currentPace;
-  currentPace = (difference * 3600) / distance
+  currentPace = (difference / 60) / distance
 
   if(currentPace === Infinity){
     currentPace = 0;
