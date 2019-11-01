@@ -1,6 +1,6 @@
 
-const staticCacheName = "site-static-v3";
-const dynamicCacheName = "site-dynamic-v3";
+const staticCacheName = "site-static-v2";
+const dynamicCacheName = "site-dynamic-v2";
 const assets = [
   "/",
   "/index.html",
@@ -17,7 +17,6 @@ const assets = [
   "/img/wakelock.webm",
   "/sound/go.mp3",
   "/sound/bing.mp3",
-  "/sound/miep.mp3",
   "/sound/run.mp3",
   "/sound/pause.mp3",
   "/sound/warmup.mp3",

@@ -16,7 +16,7 @@ const runProgress = document.getElementById("runProgress");
 const timerDisplay = document.getElementById("timer");
 const distanceDisplay = document.getElementById("distance");
 const speedDisplay = document.getElementById("speed");
-var runVisual = document.getElementById("runVisual");
+const runVisual = document.getElementById("runVisual");
 
 
 

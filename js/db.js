@@ -28,9 +28,12 @@ function openDB() {
     db = evt.target.result;
     console.log(window.location.pathname);
     console.log(`${db.name} version ${db.version} is successfully called`);
-    if(!(window.location.pathname === "/pages/history.html")){
+    const notHistory = !(window.location.pathname === "/pages/history.html");
+    const notOverview = !(window.location.pathname === "/pages/overview.html");
+
+    if(notHistory && notOverview){
       getSettings()
-    } else {
+    } else if(notOverview) {
       getLogs()
     }
 
@@ -139,7 +142,6 @@ const getLogs = () => {
     const cursor = evt.target.result;
 
     if (cursor) {
-      console.log(`${cursor.key} | ${cursor.value.title}, ${cursor.value.text} `)
       const id = cursor.value.dateID;
       const type = cursor.value.runType;
       const distance = cursor.value.distance;
@@ -147,9 +149,10 @@ const getLogs = () => {
       const date = cursor.value.date;
       const month = cursor.value.month;
 
-      renderLog(id, type, distance, time, date, month);
-      // do sth with the cursor
-      cursor.continue();
+        renderLog(id, type, distance, time, date, month);
+        // do sth with the cursor
+        cursor.continue()
+
     }
   };
 

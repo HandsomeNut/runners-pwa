@@ -175,7 +175,7 @@ const getSpeed = (distance, difference) => {
 // calculate calories burned
 const getCalories = (speed, difference) => {
   let currentCalories;
-  currentCalories = (difference * 3600) * ((0.2*speed)* 3.5 * weight) / 200
+  currentCalories = (difference) * ((0.2*speed)* 3.5 * weight) / 200
 
   return Math.round(currentCalories);
 }
@@ -183,7 +183,7 @@ const getCalories = (speed, difference) => {
 // calculate pace
 const getPace = (distance, difference) => {
   let currentPace;
-  currentPace = (difference / 60) / distance
+  currentPace = (difference / 60) / distance;
 
   if(currentPace === Infinity){
     currentPace = 0;
@@ -200,11 +200,8 @@ const checkRuntime = (difference, now) => {
   let pause = (pauseCount === runCount);
   let warmup = (difference <= warmupLength * 60);
   let cooldown = (difference <= completeLength * 60 && runCount === 0);
-  console.log(Math.floor(interval/60), interval, runLength, pauseLength, warmupLength , runCount, pauseCount)
 
   progress = Math.floor((difference / (completeLength*60))*100);
-
-  console.log("progress:" + progress, completeLength)
 
   runProgress.childNodes[1].style.width = progress + "%";
 
@@ -369,7 +366,6 @@ const voiceAndSound = (sound, voice, wait) => {
 }
 
 const bing = new audio("/sound/bing.mp3", false, true);
-const miep = new audio("/sound/miep.mp3", false, true);
 const go = new audio("/sound/go.mp3", true, false);
 const runSound = new audio("/sound/run.mp3", true, false);
 const pauseSound = new audio("/sound/pause.mp3", true, false);
@@ -465,26 +461,3 @@ const loadPersonalInfo = (info) => {
     alert("Um die Pace zu errechnen, gib bitte ein Gewicht in den Einstellungen an.")
   }
 }
-
-// const renderErrorLog = (distanceAdded, pos1, pos2, num) => {
-//
-//   const timeStamp = new Date()
-//
-//   const html = `
-//   <div class="log card-panel">
-//     <h6>Log: ${num}</h6>
-//     <p>${timeStamp}</p>
-//     <p>${distanceAdded}km</p>
-//     <p>${pos1.coords.latitude} | ${pos1.coords.longitude}</p>
-//     <p>${pos2.coords.latitude} | ${pos2.coords.longitude}</p>
-//   </div>
-//   <br>
-//   <br>
-//   <br>
-//   <br>makeDateString();
-//     addLog();
-//   <br>
-//   `
-//
-//   tracker.innerHTML += html;
-// };
