@@ -1,3 +1,5 @@
+Runners-PWA
+===========
 An App to track your running progress.
 It is a PWA which stores the data on your phone.
 You can either use it as a website through the browser, or install it on your device.
