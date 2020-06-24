@@ -21,10 +21,10 @@ Features:
   - running
   - style
 - Selectable running styles:
-  - continuous
-  - timed
+  - unlimited
+  - limited
   - interval
-- Costumize your timed and interval runs:
+- Costumize your limited and interval runs:
   - Warm up/Cool down time
   - running time and number
   - pause time and number
