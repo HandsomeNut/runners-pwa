@@ -4,6 +4,7 @@ You can either use it as a website through the browser, or install it on your de
 For that it uses the IndexedDB and Cache of your browser. (Works best in Chrome/Chromium)
 
 Features:
+---------
 - Useable offline(installs like an app)
 - Tracks your running time
 - Tracks you GPS position and calculates your distance, speed and pace
