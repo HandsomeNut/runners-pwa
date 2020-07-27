@@ -240,8 +240,8 @@ const checkRuntime = (difference, now) => {
 
 
 
-  let runDone = (interval === runLength * 60);
-  let pauseDone = (interval === pauseLength * 60);
+  let runDone = (interval >= runLength * 60);
+  let pauseDone = (interval >= pauseLength * 60);
   let typeMatch = (runType === 3);
 
   //check if phase is done
