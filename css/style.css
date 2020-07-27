@@ -63,12 +63,12 @@ a.app-logo {
   color: var(--title);
 }
 
-#scrollPage {
-  /* history page only */
-  /* position: fixed;
+/* #scrollPage {
+  history page only
+  position: fixed;
   bottom: 0;
-  width: 100%; */
-}
+  width: 100%;
+} */
 
 /* Timer page styles */
 
@@ -129,7 +129,7 @@ canvas {
 /* overview table layout */
 
 .runOverview{
-  margin-top: 25px;#1976d2
+   margin-top: 25px;/*#1976d2 */
   font-size: 1.05em;
 }
 

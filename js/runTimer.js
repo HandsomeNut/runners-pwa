@@ -58,17 +58,26 @@ const timer = () => {
   difference = Math.round(difference / 1000)
   // update additional timer infos
   if(difference%5 === 0 && gps){
+    
     getPosition();
+      
   }
   if(difference%10 === 0 && gps){
-    distanceAdded = getDistance();
-    distance += distanceAdded;
-    speed = getSpeed(distance, difference);
-    calories = getCalories(speed, difference);
-    pace = getPace(distance, difference);
+    
+    try {
+      distanceAdded = getDistance();
+    } catch(e) {
+      console.error(`Could not update Info. ${e}`)
+    }
+    
+      distance += distanceAdded;
+      speed = getSpeed(distance, difference);
+      calories = getCalories(speed, difference);
+      pace = getPace(distance, difference);
 
-    updateInfo(Math.round(distance * 100) / 100, speed, calories, pace);
-    // renderErrorLog(distanceAdded, startPos, currentPos, difference/5);
+      updateInfo(Math.round(distance * 100) / 100, speed, calories, pace);
+      // renderErrorLog(distanceAdded, startPos, currentPos, difference/5);
+   
   }
 
   updateTimer(time);
@@ -207,7 +216,6 @@ const checkRuntime = (difference, now) => {
 
   // Setting progressBar color and sound for warmup and cooldown
   if(warmup){
-    console.log("warmup")
     go.sound.onended = function(){warm.play()}
     runProgress.childNodes[1].style.backgroundColor = "var(--title)";
     if(difference === warmupLength * 60){
@@ -217,13 +225,10 @@ const checkRuntime = (difference, now) => {
     }
   } else if(cooldown) {
     pauseSound.sound.onended = function(){cool.play()}
-    console.log("cooldown")
     runProgress.childNodes[1].style.backgroundColor = "var(--title)";
   } else if(run) {
-    console.log("run")
     runProgress.childNodes[1].style.backgroundColor = "var(--primary)"
   } else {
-    console.log("pause")
     runProgress.childNodes[1].style.backgroundColor = "var(--secondary)";
   }
 
@@ -279,7 +284,7 @@ const stopRun = () => {
   startPosSet = false;
   // stop timer and add run to logs
   clearInterval(runTimer);
-  // get date of today an timeID
+  // get date of today and timeID
   dateIDstring = makeDateString(startTime);
   // add data as new log
   addLog(runType, dateIDstring[0], dateIDstring[1], startTime);

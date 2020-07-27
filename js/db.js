@@ -55,6 +55,8 @@ const addLog = (runType, dateID, dateString, startTime) => {
     runType: runType,
     distance: distanceDisplay.textContent,
     time: timerDisplay.textContent,
+    speed: speedDisplay.textContent,
+    calories: caloriesDisplay.textContent,
     date: dateString,
     month: startTime.getMonth()
   };
